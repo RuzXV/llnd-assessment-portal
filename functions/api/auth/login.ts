@@ -1,12 +1,10 @@
-import { generateToken, verifyPassword } from '../services/security';
+import { generateToken, verifyPassword } from '../services/security'; 
 
-type EnvWithSecret = Env & { JWT_SECRET: string };
-
-export const onRequestPost: PagesFunction<EnvWithSecret> = async (context) => {
+export const onRequestPost: PagesFunction<Env> = async (context) => {
   const { request, env } = context;
 
   try {
-    const body = await request.json() as any;
+    const body: any = await request.json();
     const { email, password } = body;
 
     if (!email || !password) {
@@ -33,9 +31,9 @@ export const onRequestPost: PagesFunction<EnvWithSecret> = async (context) => {
     }
 
     const token = await generateToken({
-        sub: user.user_id,
-        tenant_id: user.tenant_id,
-        role: user.role
+        sub: user.user_id as string,
+        tenant_id: user.tenant_id as string,
+        role: user.role as string
     }, env.JWT_SECRET);
 
     return new Response(JSON.stringify({ 

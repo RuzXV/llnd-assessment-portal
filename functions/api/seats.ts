@@ -1,6 +1,10 @@
 export const onRequestPost: PagesFunction<Env> = async (context) => {
   const { request, env, data } = context;
 
+  if (!data.user || (data.user_role !== 'rto_admin' && data.user_role !== 'platform_super_admin')) {
+    return new Response(JSON.stringify({ error: 'Forbidden' }), { status: 403 });
+  }
+
   if (!data.user || !data.tenant_id) return new Response('Unauthorized', { status: 401 });
 
   try {
@@ -67,6 +71,10 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
 
 export const onRequestGet: PagesFunction<Env> = async (context) => {
   const { env, data } = context;
+
+  if (!data.tenant_id || (data.user_role !== 'rto_admin' && data.user_role !== 'platform_super_admin')) {
+    return new Response(JSON.stringify({ error: 'Forbidden' }), { status: 403 });
+  }
   
   if (!data.tenant_id) return new Response('Unauthorized', { status: 401 });
 

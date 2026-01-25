@@ -3,11 +3,12 @@
   "type": "module",
   "version": "0.0.1",
   "scripts": {
-    "dev": "astro dev",
+    "dev:astro": "astro dev",
+    "dev:functions": "npx wrangler pages dev dist --port 8788 --live-reload",
+    "dev": "concurrently \"npm run dev:astro\" \"npm run dev:functions\"",
     "build": "astro build",
     "preview": "astro preview",
-    "db:seed": "npx wrangler d1 execute llnd-core-db --local --file=./schema.sql",
-    "local": "concurrently \"astro dev --port 4321\" \"npx wrangler pages dev dist --proxy=4321\" --kill-others --names \"FRONTEND,BACKEND\""
+    "db:seed": "npx wrangler d1 execute llnd-core-db --local --file=./schema.sql"
   },
   "dependencies": {
     "@astrojs/cloudflare": "^12.6.5",

@@ -5,6 +5,7 @@ node_modules/
 .dev.vars
 .env
 .env.*
+env.d.ts
 !.env.example
 *-debug.log*
 *-error.log*

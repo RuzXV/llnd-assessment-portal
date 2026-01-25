@@ -1,3 +1,5 @@
+import { calculateACSFOutcome } from '../../utils/acsf';
+
 export const onRequestGet: PagesFunction<Env> = async (context) => {
   const { params, env } = context;
   const token = params.token as string;
@@ -103,14 +105,38 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
       `).bind(crypto.randomUUID(), attempt.attempt_id, r.questionId, JSON.stringify(r.answer), isCorrect, points));
     }
 
+    const finalReportData: Record<string, any> = {};
+    let globalSupportFlag = false;
+
+    Object.keys(domainScores).forEach(domain => {
+        const d = domainScores[domain];
+        const outcome = calculateACSFOutcome(d.total, d.max, domain);
+        
+        finalReportData[domain] = {
+            score: d.total,
+            max: d.max,
+            acsf_level: outcome.level,
+            status: outcome.indicator,
+            recommendation: outcome.recommendation
+        };
+
+        if (outcome.indicator === 'support_required') globalSupportFlag = true;
+    });
+
     dbStatements.push(env.DB.prepare(`
       UPDATE assessment_attempts 
       SET status = 'submitted', 
           submitted_at = unixepoch(),
           total_score = ?,
-          domain_breakdown = ?
+          domain_breakdown = ?, 
+          outcome_flag = ?  -- New column for dashboard filtering 
       WHERE attempt_id = ?
-    `).bind(totalScore, JSON.stringify(domainScores), attempt.attempt_id));
+    `).bind(
+        totalScore, 
+        JSON.stringify(finalReportData), 
+        globalSupportFlag ? 'support_required' : 'competent',
+        attempt.attempt_id
+    ));
 
     dbStatements.push(env.DB.prepare(`
       UPDATE seats 
@@ -120,10 +146,10 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
 
     await env.DB.batch(dbStatements);
 
-    return new Response(JSON.stringify({ success: true, message: 'Assessment graded and saved' }));
+    return new Response(JSON.stringify({ success: true, message: 'Assessment submitted successfully' }));
 
   } catch (e) {
-    console.error(e);
+    console.error("Submission Error:", e);
     return new Response(JSON.stringify({ error: 'Submission failed' }), { status: 500 });
   }
 };

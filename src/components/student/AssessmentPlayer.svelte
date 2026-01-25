@@ -13,7 +13,7 @@
     let progress = $derived((Object.keys(answers).length / questions.length) * 100);
     let currentQuestion = $derived(questions[currentIndex]);
     let isLastQuestion = $derived(currentIndex === questions.length - 1);
-  
+
     function nextQuestion() {
       if (currentIndex < questions.length - 1) {
         currentIndex++;
@@ -40,21 +40,32 @@
       submitting = true;
       submitError = '';
   
-      const payload = {
+      const storedName = sessionStorage.getItem(`student_name_${token}`);
+      const storedId = sessionStorage.getItem(`student_id_${token}`);
+
+      const payload: any = {
         responses: Object.entries(answers).map(([qId, val]) => ({
           questionId: qId,
           answer: val
         }))
       };
-  
+
+      if (storedName) {
+         payload.student_name = storedName;
+         payload.student_id = storedId;
+      }
+
       try {
         const res = await fetch(`/api/assessments/${token}/submit`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(payload)
         });
-  
+
         if (!res.ok) throw new Error('Submission failed');
+        
+        sessionStorage.removeItem(`student_name_${token}`);
+        sessionStorage.removeItem(`student_id_${token}`);
         
         view = 'success';
         
@@ -84,7 +95,7 @@
       
       {#if view === 'question'}
           <div class="flex-1">
-              <h2 class="text-xl md:text-2xl font-bold text-white mb-6">
+               <h2 class="text-xl md:text-2xl font-bold text-white mb-6">
                   {currentQuestion.text}
               </h2>
   
@@ -96,7 +107,7 @@
                                   ? 'bg-blue-600 border-blue-500 shadow-md' 
                                   : 'bg-slate-800/40 border-slate-700 hover:bg-slate-700/50'}"
                           >
-                              <input 
+                               <input 
                                   type="radio" 
                                   name={currentQuestion.question_id} 
                                   value={option} 
@@ -104,10 +115,10 @@
                                   class="sr-only" 
                               />
                               <div class="w-5 h-5 rounded-full border-2 flex items-center justify-center mr-4 shrink-0
-                                  {answers[currentQuestion.question_id] === option ? 'border-white' : 'border-slate-500 group-hover:border-slate-400'}">
+                                   {answers[currentQuestion.question_id] === option ? 'border-white' : 'border-slate-500 group-hover:border-slate-400'}">
                                   {#if answers[currentQuestion.question_id] === option}
                                       <div class="w-2.5 h-2.5 rounded-full bg-white"></div>
-                                  {/if}
+                                   {/if}
                               </div>
                               <span class="text-slate-200 group-hover:text-white transition-colors">{option}</span>
                           </label>
@@ -173,7 +184,7 @@
   
           <div class="mt-8 flex justify-between pt-6 border-t border-slate-700/50">
               <button onclick={prevQuestion} class="px-6 py-2 rounded-lg font-medium text-slate-400 hover:text-white">
-                  Back to Questions
+                   Back to Questions
               </button>
   
               <button 

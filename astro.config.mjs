@@ -4,23 +4,19 @@ import cloudflare from '@astrojs/cloudflare';
 import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig({
-  output: 'server',
   integrations: [svelte()],
-  adapter: cloudflare({
-    platformProxy: {
-      enabled: true,
-    },
-  }),
-
-  server: {
-    port: 4321,
-    host: true
-  },
-
+  adapter: cloudflare(), 
+  
   vite: {
     plugins: [tailwindcss()],
     server: {
-      allowedHosts: true, 
+      proxy: {
+        '/api': {
+          target: 'http://127.0.0.1:8788',
+          changeOrigin: true,
+          secure: false,
+        },
+      },
     }
   }
 });
