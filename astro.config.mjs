@@ -4,6 +4,7 @@ import cloudflare from '@astrojs/cloudflare';
 import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig({
+  output: 'server',
   integrations: [svelte()],
   adapter: cloudflare({
     platformProxy: {
