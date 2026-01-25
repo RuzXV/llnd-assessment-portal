@@ -1,0 +1,15 @@
+dist/
+.astro/
+node_modules/
+.wrangler/
+.dev.vars
+.env
+.env.*
+!.env.example
+*-debug.log*
+*-error.log*
+.DS_Store
+.idea/
+.vscode/
+*.tsbuildinfo
+worker-configuration.d.ts
