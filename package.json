@@ -6,15 +6,18 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "db:seed": "npx wrangler d1 execute llnd-core-db --local --file=./schema.sql",
+    "local": "concurrently \"astro dev --port 4321\" \"npx wrangler pages dev dist --proxy=4321\" --kill-others --names \"FRONTEND,BACKEND\""
   },
   "dependencies": {
     "@astrojs/cloudflare": "^12.6.5",
     "@astrojs/svelte": "^7.2.5",
+    "@tailwindcss/vite": "^4.1.18",
     "astro": "^5.16.15",
     "jose": "^6.1.3",
     "pg": "^8.17.2",
     "svelte": "^5.48.2",
+    "tailwindcss": "^4.1.18",
     "typescript": "^5.9.3",
     "zod": "^3.25.76"
   },
@@ -26,6 +29,7 @@
     }
   },
   "devDependencies": {
-    "@types/pg": "^8.16.0"
+    "@types/pg": "^8.16.0",
+    "concurrently": "^9.2.1"
   }
 }

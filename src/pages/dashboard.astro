@@ -1,0 +1,84 @@
+---
+import Layout from '../layouts/Layout.astro';
+import DashboardView from '../components/admin/DashboardView.svelte';
+---
+
+<Layout title="Dashboard - RTO Admin">
+  <main class="min-h-screen relative overflow-hidden">
+     <div class="absolute top-0 left-0 w-full h-96 bg-blue-500/10 rounded-full blur-3xl -translate-y-1/2 pointer-events-none"></div>
+
+    <nav class="sticky top-0 z-50 border-b border-white/10 glass-panel bg-opacity-80 dark:bg-opacity-80">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between h-16 items-center">
+          <div class="flex items-center space-x-3">
+             <div class="h-8 w-8 bg-blue-600/20 dark:bg-blue-400/20 border border-blue-500/30 rounded flex items-center justify-center">
+                <svg class="h-5 w-5 text-blue-600 dark:text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.384-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
+                </svg>
+             </div>
+            <span class="font-bold text-xl tracking-tight text-slate-800 dark:text-white">LLND Portal</span>
+          </div>
+          <div class="flex items-center space-x-4">
+             <button id="theme-toggle" class="p-2 rounded-full hover:bg-black/5 dark:hover:bg-white/10 transition-colors">
+                <svg id="theme-toggle-light-icon" class="hidden w-5 h-5 text-yellow-500" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h1a1 1 0 100 2h-1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0V16a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 100 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
+                <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5 text-blue-300" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+             </button>
+
+             <span class="text-sm font-medium opacity-80 hidden sm:block" id="user-display">Loading...</span>
+             <button id="logout-btn" class="text-xs font-bold uppercase tracking-wide bg-red-500/80 hover:bg-red-500 text-white px-4 py-2 rounded-lg transition-all backdrop-blur-sm">
+                Logout
+             </button>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <div class="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8 relative z-10">
+      <DashboardView client:only="svelte" />
+    </div>
+  </main>
+</Layout>
+
+<script>
+    const token = localStorage.getItem('llnd_token');
+    const userStr = localStorage.getItem('llnd_user');
+  
+    if (!token) {
+        window.location.href = '/';
+    } else if (userStr) {
+        try {
+            const user = JSON.parse(userStr);
+            const display = document.getElementById('user-display');
+            if(display) display.textContent = user.email || 'Admin';
+        } catch(e) {}
+    }
+
+    document.getElementById('logout-btn')?.addEventListener('click', () => {
+        localStorage.removeItem('llnd_token');
+        localStorage.removeItem('llnd_user');
+        window.location.href = '/';
+    });
+
+    const themeToggleBtn = document.getElementById('theme-toggle');
+    const lightIcon = document.getElementById('theme-toggle-light-icon');
+    const darkIcon = document.getElementById('theme-toggle-dark-icon');
+
+    if (document.documentElement.classList.contains('dark')) {
+        lightIcon?.classList.remove('hidden');
+    } else {
+        darkIcon?.classList.remove('hidden');
+    }
+
+    themeToggleBtn?.addEventListener('click', function() {
+        lightIcon?.classList.toggle('hidden');
+        darkIcon?.classList.toggle('hidden');
+
+        if (document.documentElement.classList.contains('dark')) {
+            document.documentElement.classList.remove('dark');
+            localStorage.setItem('theme', 'light');
+        } else {
+            document.documentElement.classList.add('dark');
+            localStorage.setItem('theme', 'dark');
+        }
+    });
+</script>

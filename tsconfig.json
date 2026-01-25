@@ -2,8 +2,10 @@
   "extends": "astro/tsconfigs/strict",
   "compilerOptions": {
     "types": ["./worker-configuration.d.ts"],
-    "moduleResolution": "node",
-    "strict": true
+    "moduleResolution": "bundler",
+    "strict": true,
+    "verbatimModuleSyntax": true,
+    "allowSyntheticDefaultImports": true
   },
   "include": [".astro/types.d.ts", "**/*", "functions/**/*"],
   "exclude": ["dist"]

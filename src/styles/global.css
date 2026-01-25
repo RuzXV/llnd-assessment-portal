@@ -1,0 +1,80 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --app-bg: theme('colors.gray.200');
+    --app-text: theme('colors.slate.900');
+  }
+
+  :root.dark {
+    --app-bg: theme('colors.slate.900');
+    --app-text: theme('colors.slate.100');
+  }
+
+  body {
+    background-color: var(--app-bg);
+    color: var(--app-text);
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+}
+
+@layer components {
+  .glass-panel {
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid;
+    transition: all 0.3s ease;
+    background-color: rgba(255, 255, 255, 0.7);
+    border-color: rgba(255, 255, 255, 0.4);
+  }
+
+  :is(.dark .glass-panel) {
+    background-color: rgba(30, 41, 59, 0.6);
+    border-color: rgba(51, 65, 85, 0.5);
+  }
+
+  .glass-panel-fixed {
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid;
+    transition: all 0.3s ease;
+    background-color: rgba(30, 41, 59, 0.75);
+    border-color: rgba(71, 85, 105, 0.6);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+  }
+
+  .glass-input-fixed {
+    background-color: rgba(15, 23, 42, 0.6);
+    border: 1px solid rgba(71, 85, 105, 0.6);
+    color: white;
+    transition: all 0.2s;
+  }
+  
+  .glass-input-fixed:focus {
+     background-color: rgba(15, 23, 42, 0.9);
+     border-color: rgb(59, 130, 246);
+     outline: none;
+  }
+
+  .glass-input {
+    background-color: rgba(255, 255, 255, 0.5);
+    border: 1px solid rgb(229, 231, 235);
+    transition: all 0.2s;
+  }
+  
+  .glass-input:focus {
+    background-color: rgba(255, 255, 255, 0.8);
+    outline: none;
+  }
+
+  :is(.dark .glass-input) {
+    background-color: rgba(15, 23, 42, 0.5);
+    border-color: rgb(51, 65, 85);
+    color: white;
+  }
+  
+  :is(.dark .glass-input):focus {
+     background-color: rgba(15, 23, 42, 0.8);
+     border-color: rgb(59, 130, 246);
+  }
+}

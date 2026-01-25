@@ -1,6 +1,5 @@
 import { SignJWT, jwtVerify } from 'jose';
 
-const DEFAULT_SECRET = 'temporary-dev-secret-change-this-in-prod';
 const ALG = 'HS256';
 
 export async function hashPassword(password: string): Promise<string> {
@@ -32,8 +31,10 @@ export async function verifyPassword(password: string, storedHash: string): Prom
   return buf2hex(exportedKey) === originalHash;
 }
 
-export async function generateToken(payload: any, secret?: string): Promise<string> {
-  const secretKey = new TextEncoder().encode(secret || DEFAULT_SECRET);
+export async function generateToken(payload: any, secret: string): Promise<string> {
+  if (!secret) throw new Error('CRITICAL: JWT_SECRET is not defined in environment variables.');
+  
+  const secretKey = new TextEncoder().encode(secret);
   return new SignJWT(payload)
     .setProtectedHeader({ alg: ALG })
     .setIssuedAt()
@@ -41,8 +42,10 @@ export async function generateToken(payload: any, secret?: string): Promise<stri
     .sign(secretKey);
 }
 
-export async function verifyToken(token: string, secret?: string): Promise<any> {
-  const secretKey = new TextEncoder().encode(secret || DEFAULT_SECRET);
+export async function verifyToken(token: string, secret: string): Promise<any> {
+  if (!secret) throw new Error('CRITICAL: JWT_SECRET is not defined in environment variables.');
+
+  const secretKey = new TextEncoder().encode(secret);
   try {
     const { payload } = await jwtVerify(token, secretKey);
     return payload;
@@ -51,7 +54,6 @@ export async function verifyToken(token: string, secret?: string): Promise<any> 
   }
 }
 
-// UTILS
 function buf2hex(buffer: ArrayBuffer | Uint8Array): string {
   return [...new Uint8Array(buffer)].map(x => x.toString(16).padStart(2, '0')).join('');
 }
