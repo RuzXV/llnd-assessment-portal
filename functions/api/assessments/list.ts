@@ -16,7 +16,7 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
         p.name as product_name
       FROM assessment_attempts a
       JOIN seats s ON a.seat_id = s.seat_id
-      JOIN products p ON s.product_id = p.product_id
+      JOIN assessment_products p ON s.product_id = p.product_id
       WHERE a.tenant_id = ?
     `;
     

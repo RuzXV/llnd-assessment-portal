@@ -1,7 +1,7 @@
 export const onRequestPost: PagesFunction<Env> = async (context) => {
   const { request, env, data } = context;
 
-  if (!data.user || (data.user_role !== 'rto_admin' && data.user_role !== 'platform_super_admin')) {
+  if (!data.user || (data.user_role !== 'rto_admin' && data.user_role !== 'super_admin')) {
     return new Response(JSON.stringify({ error: 'Forbidden' }), { status: 403 });
   }
 
@@ -72,7 +72,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
 export const onRequestGet: PagesFunction<Env> = async (context) => {
   const { env, data } = context;
 
-  if (!data.tenant_id || (data.user_role !== 'rto_admin' && data.user_role !== 'platform_super_admin')) {
+  if (!data.tenant_id || (data.user_role !== 'rto_admin' && data.user_role !== 'super_admin')) {
     return new Response(JSON.stringify({ error: 'Forbidden' }), { status: 403 });
   }
   
@@ -86,7 +86,7 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
           s.status, 
           COUNT(*) as count 
       FROM seats s
-      JOIN products p ON s.product_id = p.product_id
+      JOIN assessment_products p ON s.product_id = p.product_id
       WHERE s.tenant_id = ? 
       GROUP BY s.product_id, s.status, p.name
       `).bind(data.tenant_id).all();

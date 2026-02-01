@@ -25,6 +25,15 @@
   :is(.dark h1), :is(.dark h2), :is(.dark h3), :is(.dark h4), :is(.dark h5), :is(.dark h6) {
     color: theme('colors.white');
   }
+
+  /* Force dark text in light mode for all common text elements */
+  p, span, label, td, th, dt, dd, li {
+    color: theme('colors.slate.700');
+  }
+
+  :is(.dark p), :is(.dark span), :is(.dark label), :is(.dark td), :is(.dark th), :is(.dark dt), :is(.dark dd), :is(.dark li) {
+    color: theme('colors.slate.300');
+  }
 }
 
 @layer components {
@@ -33,16 +42,30 @@
     -webkit-backdrop-filter: blur(12px);
     border: 1px solid;
     transition: all 0.3s ease;
-    background-color: rgba(255, 255, 255, 0.85);
-    border-color: rgba(203, 213, 225, 0.8);
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    background-color: rgba(255, 255, 255, 0.95);
+    border-color: rgba(148, 163, 184, 0.5);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  }
+
+  .glass-panel * {
     color: theme('colors.slate.800');
+  }
+
+  .glass-panel h1, .glass-panel h2, .glass-panel h3, .glass-panel h4, .glass-panel h5, .glass-panel h6 {
+    color: theme('colors.slate.900');
   }
 
   :is(.dark .glass-panel) {
     background-color: rgba(30, 41, 59, 0.6);
     border-color: rgba(51, 65, 85, 0.5);
-    color: theme('colors.slate.100');
+  }
+
+  :is(.dark .glass-panel) * {
+    color: theme('colors.slate.200');
+  }
+
+  :is(.dark .glass-panel) h1, :is(.dark .glass-panel) h2, :is(.dark .glass-panel) h3 {
+    color: theme('colors.white');
   }
 
   .glass-panel-fixed {
@@ -61,7 +84,7 @@
     color: white;
     transition: all 0.2s;
   }
-  
+
   .glass-input-fixed:focus {
      background-color: rgba(15, 23, 42, 0.9);
      border-color: rgb(59, 130, 246);
@@ -69,10 +92,10 @@
   }
 
   .glass-input {
-    background-color: rgba(255, 255, 255, 0.9);
-    border: 1px solid rgb(203, 213, 225);
+    background-color: rgba(255, 255, 255, 0.95);
+    border: 1px solid rgb(148, 163, 184);
     transition: all 0.2s;
-    color: theme('colors.slate.900');
+    color: theme('colors.slate.900') !important;
   }
 
   .glass-input:focus {
@@ -83,17 +106,26 @@
   }
 
   .glass-input::placeholder {
-    color: theme('colors.slate.400');
+    color: theme('colors.slate.500');
   }
 
   :is(.dark .glass-input) {
     background-color: rgba(15, 23, 42, 0.5);
     border-color: rgb(51, 65, 85);
-    color: white;
+    color: white !important;
   }
-  
+
   :is(.dark .glass-input):focus {
      background-color: rgba(15, 23, 42, 0.8);
      border-color: rgb(59, 130, 246);
+  }
+
+  /* Nav bar text in light mode */
+  nav span, nav a {
+    color: theme('colors.slate.700');
+  }
+
+  :is(.dark nav) span, :is(.dark nav) a {
+    color: theme('colors.slate.300');
   }
 }
