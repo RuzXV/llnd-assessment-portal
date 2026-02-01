@@ -63,9 +63,9 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
       attempt_id: attemptId 
     }));
 
-  } catch (e) {
+  } catch (e: any) {
     console.error('Issue Assessment Error:', e);
-    return new Response(JSON.stringify({ error: 'Server error' }), { status: 500 });
+    return new Response(JSON.stringify({ error: 'Server error', debug: e.message }), { status: 500 });
   }
 };
 
