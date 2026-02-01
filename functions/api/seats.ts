@@ -16,8 +16,8 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
     }
 
     const version = await env.DB.prepare(`
-      SELECT version_id FROM versions 
-      WHERE product_id = ? AND active = 1 
+      SELECT version_id FROM assessment_versions
+      WHERE product_id = ? AND is_active = 1
       ORDER BY created_at DESC LIMIT 1
     `).bind(product_id).first();
 
@@ -42,18 +42,18 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
 
     await env.DB.batch([
       env.DB.prepare("UPDATE seats SET status = 'reserved' WHERE seat_id = ?").bind(seatId),
-      
+
       env.DB.prepare(`
         INSERT INTO assessment_attempts (
           attempt_id, tenant_id, seat_id, version_id, token_hash,
-          student_name, student_id, status, created_at, expires_at
+          student_name, student_id, status
         )
-        VALUES (?, ?, ?, ?, ?, ?, ?, 'issued', unixepoch(), unixepoch() + (72 * 60 * 60))
+        VALUES (?, ?, ?, ?, ?, ?, ?, 'issued')
       `).bind(attemptId, data.tenant_id, seatId, versionId, token, student_name, student_id),
-      
+
       env.DB.prepare(`
-          INSERT INTO audit_logs (tenant_id, actor_id, action, entity_id, created_at) 
-          VALUES (?, ?, 'ISSUE_ASSESSMENT', ?, unixepoch())
+          INSERT INTO audit_logs (tenant_id, actor_id, action, entity_id)
+          VALUES (?, ?, 'ISSUE_ASSESSMENT', ?)
       `).bind(data.tenant_id, data.user, seatId)
     ]);
 
