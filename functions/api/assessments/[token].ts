@@ -83,7 +83,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
     });
 
     for (const r of responses) {
-      const q = qMap.get(r.questionId);
+      const q = qMap.get(r.questionId) as any;
       if (!q) continue;
 
       let points = 0;

@@ -1,7 +1,6 @@
 {
   "extends": "astro/tsconfigs/strict",
   "compilerOptions": {
-    "types": ["./worker-configuration.d.ts"],
     "moduleResolution": "bundler",
     "strict": true,
     "verbatimModuleSyntax": true,
