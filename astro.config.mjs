@@ -7,6 +7,9 @@ export default defineConfig({
   integrations: [svelte()],
   output: 'server',
   adapter: cloudflare({
+    runtime: {
+      mode: 'off'
+    },
     routes: {
       extend: {
         exclude: [{ pattern: '/api/*' }]
