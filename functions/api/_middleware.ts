@@ -12,10 +12,13 @@ export const onRequest: PagesFunction<Env, any, Data> = async (context) => {
   const url = new URL(request.url);
 
 
-  if (
+  // Public routes that don't require authentication
+  // Note: /api/assessments/{token} routes are for students, /api/assessments/list is for admins
+  const isPublicRoute =
     url.pathname.includes('/api/auth/login') ||
-    url.pathname.includes('/api/assessments/')
-  ) {
+    (url.pathname.includes('/api/assessments/') && !url.pathname.includes('/api/assessments/list'));
+
+  if (isPublicRoute) {
     return next();
   }
 
