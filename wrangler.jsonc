@@ -1,0 +1,23 @@
+{
+  "name": "llnd-assessment-portal",
+  "compatibility_date": "2026-01-24",
+  "compatibility_flags": [
+    "nodejs_compat",
+    "global_fetch_strictly_public"
+  ],
+  "assets": {
+    "binding": "ASSETS",
+    "directory": "./dist"
+  },
+  "observability": {
+    "enabled": true
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "llnd-core-db",
+      "database_id": "e4cccf89-6734-48b3-8d0d-0ab38c792958",
+      "migrations_dir": "migrations"
+    }
+  ]
+}

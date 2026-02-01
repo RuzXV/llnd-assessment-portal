@@ -5,8 +5,8 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
   const token = params.token as string;
 
   const attempt = await env.DB.prepare(`
-    SELECT 
-      a.attempt_id, a.student_name, a.status, a.version_id,
+    SELECT
+      a.attempt_id, a.student_name, a.status, a.version_id, a.draft_responses, a.expires_at,
       t.name as rto_name, t.logo_url, t.brand_primary_color
     FROM assessment_attempts a
     JOIN tenants t ON a.tenant_id = t.tenant_id
@@ -15,6 +15,15 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
 
   if (!attempt) {
     return new Response(JSON.stringify({ error: 'Invalid assessment link' }), { status: 404 });
+  }
+
+  // Check if assessment has expired
+  const now = Math.floor(Date.now() / 1000);
+  if (attempt.expires_at && now > attempt.expires_at && attempt.status !== 'submitted') {
+    await env.DB.prepare(`
+      UPDATE assessment_attempts SET status = 'expired' WHERE attempt_id = ?
+    `).bind(attempt.attempt_id).run();
+    return new Response(JSON.stringify({ error: 'Assessment has expired' }), { status: 403 });
   }
 
   if (attempt.status === 'submitted' || attempt.status === 'expired') {
@@ -40,12 +49,14 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
 
   return new Response(JSON.stringify({
     student: { name: attempt.student_name },
-    branding: { 
-      rto_name: attempt.rto_name, 
-      logo: attempt.logo_url, 
-      color: attempt.brand_primary_color 
+    branding: {
+      rto_name: attempt.rto_name,
+      logo: attempt.logo_url,
+      color: attempt.brand_primary_color
     },
-    questions: formattedQuestions
+    questions: formattedQuestions,
+    draft_responses: attempt.draft_responses ? JSON.parse(attempt.draft_responses as string) : null,
+    expires_at: attempt.expires_at
   }));
 };
 
@@ -124,16 +135,17 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
     });
 
     dbStatements.push(env.DB.prepare(`
-      UPDATE assessment_attempts 
-      SET status = 'submitted', 
+      UPDATE assessment_attempts
+      SET status = 'submitted',
           submitted_at = unixepoch(),
           total_score = ?,
-          domain_breakdown = ?, 
-          outcome_flag = ?  -- New column for dashboard filtering 
+          domain_breakdown = ?,
+          outcome_flag = ?,
+          draft_responses = NULL
       WHERE attempt_id = ?
     `).bind(
-        totalScore, 
-        JSON.stringify(finalReportData), 
+        totalScore,
+        JSON.stringify(finalReportData),
         globalSupportFlag ? 'support_required' : 'competent',
         attempt.attempt_id
     ));

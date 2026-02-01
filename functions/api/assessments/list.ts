@@ -5,13 +5,14 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
     const status = url.searchParams.get('status'); 
     
     let sql = `
-      SELECT 
-        a.attempt_id, 
-        a.student_name, 
-        a.status, 
-        a.started_at, 
-        a.submitted_at, 
+      SELECT
+        a.attempt_id,
+        a.student_name,
+        a.status,
+        a.started_at,
+        a.submitted_at,
         a.total_score,
+        a.outcome_flag,
         p.name as product_name
       FROM assessment_attempts a
       JOIN seats s ON a.seat_id = s.seat_id

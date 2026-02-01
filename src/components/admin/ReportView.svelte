@@ -1,11 +1,14 @@
 <script lang="ts">
     import { onMount } from 'svelte';
-    
+    import html2pdf from 'html2pdf.js';
+
     export let attemptId: string;
-    
+
     let loading = true;
     let error = '';
     let report: any = null;
+    let reportElement: HTMLElement;
+    let isDownloading = false;
   
     onMount(async () => {
       const token = localStorage.getItem('llnd_token');
@@ -38,6 +41,40 @@
       if (level === 3) return 'bg-yellow-500';
       return 'bg-green-500';
     }
+
+    async function downloadPDF() {
+      if (!reportElement || isDownloading) return;
+
+      isDownloading = true;
+
+      try {
+        const opt: any = {
+          margin: [10, 10, 10, 10],
+          filename: `LLND_Report_${report.student_name.replace(/\s+/g, '_')}_${new Date().toISOString().split('T')[0]}.pdf`,
+          image: { type: 'jpeg', quality: 0.98 },
+          html2canvas: {
+            scale: 2,
+            useCORS: true,
+            logging: false,
+            backgroundColor: '#ffffff'
+          },
+          jsPDF: {
+            unit: 'mm',
+            format: 'a4',
+            orientation: 'portrait',
+            compress: true
+          },
+          pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
+        };
+
+        await html2pdf().from(reportElement).set(opt).save();
+      } catch (e) {
+        console.error('PDF generation failed:', e);
+        alert('Failed to generate PDF. Please try again.');
+      } finally {
+        isDownloading = false;
+      }
+    }
   </script>
   
   {#if loading}
@@ -48,8 +85,32 @@
       <p>{error}</p>
     </div>
   {:else if report}
-    <div class="glass-panel bg-white dark:bg-slate-800 rounded-xl shadow-lg overflow-hidden border border-slate-200 dark:border-slate-700">
-      
+    <div class="mb-6 flex justify-end gap-4">
+      <button
+        onclick={downloadPDF}
+        disabled={isDownloading}
+        class="px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-600 text-white font-bold rounded-lg
+               hover:from-blue-600 hover:to-purple-700 transition-all duration-200
+               disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-xl
+               flex items-center gap-2"
+      >
+        {#if isDownloading}
+          <svg class="animate-spin h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+          </svg>
+          Generating PDF...
+        {:else}
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd" />
+          </svg>
+          Download PDF Report
+        {/if}
+      </button>
+    </div>
+
+    <div bind:this={reportElement} class="glass-panel bg-white dark:bg-slate-800 rounded-xl shadow-lg overflow-hidden border border-slate-200 dark:border-slate-700">
+
       <div class="p-8 border-b border-slate-200 dark:border-slate-700 flex justify-between items-start">
         <div>
           <h1 class="text-3xl font-bold text-slate-900 dark:text-white mb-2">LLND Assessment Report</h1>
@@ -113,3 +174,19 @@
       </div>
     </div>
   {/if}
+
+<style>
+  :global(.print-force-color) {
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+
+  :global(.bg-red-500),
+  :global(.bg-yellow-500),
+  :global(.bg-green-500),
+  :global(.bg-green-100),
+  :global(.bg-orange-100) {
+    print-color-adjust: exact !important;
+    -webkit-print-color-adjust: exact !important;
+  }
+</style>

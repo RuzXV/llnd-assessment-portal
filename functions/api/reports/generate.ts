@@ -14,7 +14,13 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
     if (!attempt || attempt.status !== 'submitted') {
         return new Response(JSON.stringify({ error: 'Report not available' }), { status: 400 });
     }
-    
+
+    // Audit log report generation
+    await env.DB.prepare(`
+      INSERT INTO audit_logs (tenant_id, actor_id, action, entity, created_at)
+      VALUES (?, ?, 'GENERATE_REPORT', ?, unixepoch())
+    `).bind(data.tenant_id, data.user, `Report for ${attempt.student_name} (${attempt_id})`).run();
+
     return new Response(JSON.stringify({ 
         success: true, 
         report_data: {

@@ -1,18 +1,98 @@
 <script lang="ts">
+    import { onMount, onDestroy } from 'svelte';
+
     let { data, token } = $props();
-  
+
     let questions = $derived(data.questions || []);
     let branding = $derived(data.branding || {});
-    
+
     let currentIndex = $state(0);
     let answers = $state<Record<string, any>>({});
     let view = $state<'question' | 'review' | 'success'>('question');
     let submitting = $state(false);
     let submitError = $state('');
-  
+    let autosaving = $state(false);
+    let lastSaved = $state<Date | null>(null);
+    let autosaveInterval: number | null = null;
+    let timeRemaining = $state<number | null>(null);
+    let countdownInterval: number | null = null;
+
     let progress = $derived((Object.keys(answers).length / questions.length) * 100);
     let currentQuestion = $derived(questions[currentIndex]);
     let isLastQuestion = $derived(currentIndex === questions.length - 1);
+
+    let formattedTimeRemaining = $derived(() => {
+      if (timeRemaining === null) return null;
+      const hours = Math.floor(timeRemaining / 3600);
+      const minutes = Math.floor((timeRemaining % 3600) / 60);
+      const seconds = timeRemaining % 60;
+      return `${hours}h ${minutes}m ${seconds}s`;
+    });
+
+    // Load draft responses on mount
+    onMount(() => {
+      if (data.draft_responses) {
+        answers = data.draft_responses;
+      }
+
+      // Set up autosave every 30 seconds
+      autosaveInterval = window.setInterval(async () => {
+        if (Object.keys(answers).length > 0 && view !== 'success') {
+          await autosave();
+        }
+      }, 30000);
+
+      // Initialize countdown timer if expires_at exists
+      if (data.expires_at) {
+        const updateCountdown = () => {
+          const now = Math.floor(Date.now() / 1000);
+          const remaining = data.expires_at - now;
+
+          if (remaining <= 0) {
+            timeRemaining = 0;
+            // Auto-submit when time expires
+            if (view !== 'success') {
+              submitAssessment();
+            }
+          } else {
+            timeRemaining = remaining;
+          }
+        };
+
+        updateCountdown();
+        countdownInterval = window.setInterval(updateCountdown, 1000);
+      }
+    });
+
+    onDestroy(() => {
+      if (autosaveInterval) {
+        clearInterval(autosaveInterval);
+      }
+      if (countdownInterval) {
+        clearInterval(countdownInterval);
+      }
+    });
+
+    async function autosave() {
+      if (autosaving) return;
+      autosaving = true;
+
+      try {
+        const res = await fetch(`/api/assessments/${token}/autosave`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ answers })
+        });
+
+        if (res.ok) {
+          lastSaved = new Date();
+        }
+      } catch (e) {
+        console.error('Autosave failed:', e);
+      } finally {
+        autosaving = false;
+      }
+    }
 
     function nextQuestion() {
       if (currentIndex < questions.length - 1) {
@@ -37,9 +117,19 @@
     }
   
     async function submitAssessment() {
+      // Clear intervals before submission
+      if (autosaveInterval) {
+        clearInterval(autosaveInterval);
+        autosaveInterval = null;
+      }
+      if (countdownInterval) {
+        clearInterval(countdownInterval);
+        countdownInterval = null;
+      }
+
       submitting = true;
       submitError = '';
-  
+
       const storedName = sessionStorage.getItem(`student_name_${token}`);
       const storedId = sessionStorage.getItem(`student_id_${token}`);
 
@@ -86,8 +176,34 @@
               {view === 'question' ? `Question ${currentIndex + 1} of ${questions.length}` : 'Review'}
           </span>
       </div>
-      <div class="text-xs font-bold text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/30 px-3 py-1 rounded-full">
-          {Math.round(progress)}% Completed
+      <div class="flex items-center gap-3">
+          {#if autosaving}
+              <span class="text-xs text-slate-400 flex items-center gap-2">
+                  <svg class="animate-spin h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                      <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                      <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  </svg>
+                  Saving...
+              </span>
+          {:else if lastSaved}
+              <span class="text-xs text-green-500 flex items-center gap-1">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                      <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                  </svg>
+                  Saved
+              </span>
+          {/if}
+          {#if timeRemaining !== null}
+              <div class="text-xs font-bold px-3 py-1 rounded-full
+                  {timeRemaining < 300 ? 'text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-900/30' :
+                   timeRemaining < 1800 ? 'text-yellow-600 dark:text-yellow-400 bg-yellow-50 dark:bg-yellow-900/30' :
+                   'text-slate-600 dark:text-slate-400 bg-slate-50 dark:bg-slate-900/30'}">
+                  ⏱️ {formattedTimeRemaining}
+              </div>
+          {/if}
+          <div class="text-xs font-bold text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/30 px-3 py-1 rounded-full">
+              {Math.round(progress)}% Completed
+          </div>
       </div>
   </div>
   

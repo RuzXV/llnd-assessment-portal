@@ -3,18 +3,22 @@
   "type": "module",
   "version": "0.0.1",
   "scripts": {
-  "dev:astro": "astro dev",
-  "dev:functions": "npx wrangler pages dev public --port 8788",
-  "dev": "concurrently -k \"npm run dev:astro\" \"npm run dev:functions\"",
-  "build": "astro build",
-  "preview": "astro preview",
-  "db:seed": "npx wrangler d1 execute llnd-core-db --local --file=./schema.sql"
- },
+    "dev:astro": "astro dev",
+    "dev:functions": "npx wrangler pages dev public --port 8788",
+    "dev": "concurrently -k \"npm run dev:astro\" \"npm run dev:functions\"",
+    "build": "astro build",
+    "preview": "astro preview",
+    "db:seed": "npx wrangler d1 execute llnd-core-db --local --file=./schema.sql",
+    "db:migrate:local": "npx wrangler d1 migrations apply llnd-core-db --local",
+    "db:migrate:remote": "npx wrangler d1 migrations apply llnd-core-db --remote",
+    "db:migrate:create": "npx wrangler d1 migrations create llnd-core-db"
+  },
   "dependencies": {
     "@astrojs/cloudflare": "^12.6.5",
     "@astrojs/svelte": "^7.2.5",
     "@tailwindcss/vite": "^4.1.18",
     "astro": "^5.16.15",
+    "html2pdf.js": "^0.14.0",
     "jose": "^6.1.3",
     "pg": "^8.17.2",
     "svelte": "^5.48.2",
@@ -30,6 +34,7 @@
     }
   },
   "devDependencies": {
+    "@types/html2pdf.js": "^0.10.0",
     "@types/pg": "^8.16.0",
     "concurrently": "^9.2.1"
   }

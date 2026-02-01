@@ -45,10 +45,10 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
       
       env.DB.prepare(`
         INSERT INTO assessment_attempts (
-          attempt_id, tenant_id, seat_id, version_id, token_hash, 
-          student_name, student_id, status, created_at
+          attempt_id, tenant_id, seat_id, version_id, token_hash,
+          student_name, student_id, status, created_at, expires_at
         )
-        VALUES (?, ?, ?, ?, ?, ?, ?, 'issued', unixepoch())
+        VALUES (?, ?, ?, ?, ?, ?, ?, 'issued', unixepoch(), unixepoch() + (72 * 60 * 60))
       `).bind(attemptId, data.tenant_id, seatId, versionId, token, student_name, student_id),
       
       env.DB.prepare(`

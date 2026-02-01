@@ -36,6 +36,12 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
         role: user.role as string
     }, env.JWT_SECRET);
 
+    // Audit log successful login
+    await env.DB.prepare(`
+      INSERT INTO audit_logs (tenant_id, actor_id, action, entity, created_at)
+      VALUES (?, ?, 'LOGIN', ?, unixepoch())
+    `).bind(user.tenant_id, user.user_id, email).run();
+
     return new Response(JSON.stringify({ 
       token, 
       user: { 

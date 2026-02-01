@@ -1,28 +1,27 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import DashboardView from '../components/admin/DashboardView.svelte';
+import BrandingSettings from '../components/admin/BrandingSettings.svelte';
 ---
 
-<Layout title="Dashboard - RTO Admin">
+<Layout title="Settings - RTO Admin">
   <main class="min-h-screen relative overflow-hidden">
      <div class="absolute top-0 left-0 w-full h-96 bg-blue-500/10 rounded-full blur-3xl -translate-y-1/2 pointer-events-none"></div>
 
     <nav class="sticky top-0 z-50 border-b border-white/10 glass-panel bg-opacity-80 dark:bg-opacity-80">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16 items-center">
-          <div class="flex items-center space-x-3">
+          <div class="flex items-center space-x-4">
              <div class="h-8 w-8 bg-blue-600/20 dark:bg-blue-400/20 border border-blue-500/30 rounded flex items-center justify-center">
                 <svg class="h-5 w-5 text-blue-600 dark:text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.384-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
                 </svg>
              </div>
             <span class="font-bold text-xl tracking-tight text-slate-800 dark:text-white">LLND Portal</span>
+            <span class="text-sm text-slate-500 dark:text-slate-400">/ Settings</span>
           </div>
           <div class="flex items-center space-x-4">
-             <a href="/settings" class="p-2 rounded-full hover:bg-black/5 dark:hover:bg-white/10 transition-colors" title="Settings">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-slate-600 dark:text-slate-300" viewBox="0 0 20 20" fill="currentColor">
-                   <path fill-rule="evenodd" d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z" clip-rule="evenodd" />
-                </svg>
+             <a href="/dashboard" class="text-sm font-medium text-blue-600 dark:text-blue-400 hover:underline">
+                Back to Dashboard
              </a>
 
              <button id="theme-toggle" class="p-2 rounded-full hover:bg-black/5 dark:hover:bg-white/10 transition-colors">
@@ -39,8 +38,8 @@ import DashboardView from '../components/admin/DashboardView.svelte';
       </div>
     </nav>
 
-    <div class="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8 relative z-10">
-      <DashboardView client:only="svelte" />
+    <div class="max-w-4xl mx-auto py-8 px-4 sm:px-6 lg:px-8 relative z-10">
+      <BrandingSettings client:only="svelte" />
     </div>
   </main>
 </Layout>
@@ -48,7 +47,7 @@ import DashboardView from '../components/admin/DashboardView.svelte';
 <script>
     const token = localStorage.getItem('llnd_token');
     const userStr = localStorage.getItem('llnd_user');
-  
+
     if (!token) {
         window.location.href = '/';
     } else if (userStr) {
