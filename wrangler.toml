@@ -10,11 +10,6 @@ database_name = "llnd-core-db"
 database_id = "e4cccf89-6734-48b3-8d0d-0ab38c792958"
 migrations_dir = "migrations"
 
-# KV namespace for Astro sessions
-[[kv_namespaces]]
-binding = "SESSION"
-id = "f74f4299c4ab4857ac43f36b12d30e95"
-
 # Observability
 [observability]
 enabled = true
