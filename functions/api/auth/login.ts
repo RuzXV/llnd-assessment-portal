@@ -49,9 +49,9 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
     // Audit log successful login
     console.log('[LOGIN] Writing audit log');
     await env.DB.prepare(`
-      INSERT INTO audit_logs (tenant_id, actor_id, action, entity, created_at)
-      VALUES (?, ?, 'LOGIN', ?, unixepoch())
-    `).bind(user.tenant_id, user.user_id, email).run();
+      INSERT INTO audit_logs (tenant_id, actor_id, action, entity_id, details)
+      VALUES (?, ?, 'LOGIN', ?, ?)
+    `).bind(user.tenant_id, user.user_id, user.user_id, JSON.stringify({ email })).run();
 
     console.log('[LOGIN] Login successful');
     return new Response(JSON.stringify({
