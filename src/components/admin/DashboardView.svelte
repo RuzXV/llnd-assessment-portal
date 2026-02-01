@@ -239,7 +239,7 @@
                                   </td>
                                   <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                       {#if assessment.status === 'submitted'}
-                                          <a href={`/reports/${assessment.attempt_id}`} class="text-blue-600 dark:text-blue-400 hover:underline">View</a>
+                                          <a href={`/report?id=${assessment.attempt_id}`} class="text-blue-600 dark:text-blue-400 hover:underline">View</a>
                                       {/if}
                                   </td>
                               </tr>

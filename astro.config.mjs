@@ -1,18 +1,10 @@
 import { defineConfig } from 'astro/config';
 import svelte from '@astrojs/svelte';
 import tailwindcss from '@tailwindcss/vite';
-import cloudflare from '@astrojs/cloudflare';
 
 export default defineConfig({
   integrations: [svelte()],
-  output: 'server',
-  adapter: cloudflare({
-    routes: {
-      extend: {
-        exclude: [{ pattern: '/api/*' }]
-      }
-    }
-  }),
+  output: 'static',
   vite: {
     plugins: [tailwindcss()],
     server: {

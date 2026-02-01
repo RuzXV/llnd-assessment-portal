@@ -1,10 +1,13 @@
 <script lang="ts">
     import { onMount, onDestroy } from 'svelte';
 
-    let { data, token } = $props();
+    let token = $state<string | null>(null);
+    let data = $state<any>(null);
+    let loading = $state(true);
+    let loadError = $state<string | null>(null);
 
-    let questions = $derived(data.questions || []);
-    let branding = $derived(data.branding || {});
+    let questions = $derived(data?.questions || []);
+    let branding = $derived(data?.branding || {});
 
     let currentIndex = $state(0);
     let answers = $state<Record<string, any>>({});
@@ -17,7 +20,7 @@
     let timeRemaining = $state<number | null>(null);
     let countdownInterval: number | null = null;
 
-    let progress = $derived((Object.keys(answers).length / questions.length) * 100);
+    let progress = $derived(questions.length > 0 ? (Object.keys(answers).length / questions.length) * 100 : 0);
     let currentQuestion = $derived(questions[currentIndex]);
     let isLastQuestion = $derived(currentIndex === questions.length - 1);
 
@@ -29,38 +32,64 @@
       return `${hours}h ${minutes}m ${seconds}s`;
     });
 
-    // Load draft responses on mount
-    onMount(() => {
-      if (data.draft_responses) {
-        answers = data.draft_responses;
+    onMount(async () => {
+      // Extract token from URL query parameter: /assess-start?token=xxx
+      const urlParams = new URLSearchParams(window.location.search);
+      token = urlParams.get('token');
+
+      if (!token) {
+        loadError = "Invalid assessment link";
+        loading = false;
+        return;
       }
 
-      // Set up autosave every 30 seconds
-      autosaveInterval = window.setInterval(async () => {
-        if (Object.keys(answers).length > 0 && view !== 'success') {
-          await autosave();
+      // Fetch assessment data
+      try {
+        const res = await fetch(`/api/assessments/${token}`);
+        if (!res.ok) {
+          const err = await res.json();
+          throw new Error(err.error || 'Unable to load assessment');
         }
-      }, 30000);
+        data = await res.json();
 
-      // Initialize countdown timer if expires_at exists
-      if (data.expires_at) {
-        const updateCountdown = () => {
-          const now = Math.floor(Date.now() / 1000);
-          const remaining = data.expires_at - now;
+        // Load draft responses
+        if (data.draft_responses) {
+          answers = data.draft_responses;
+        }
 
-          if (remaining <= 0) {
-            timeRemaining = 0;
-            // Auto-submit when time expires
-            if (view !== 'success') {
-              submitAssessment();
-            }
-          } else {
-            timeRemaining = remaining;
+        // Set up autosave every 30 seconds
+        autosaveInterval = window.setInterval(async () => {
+          if (Object.keys(answers).length > 0 && view !== 'success') {
+            await autosave();
           }
-        };
+        }, 30000);
 
-        updateCountdown();
-        countdownInterval = window.setInterval(updateCountdown, 1000);
+        // Initialize countdown timer if expires_at exists
+        if (data.expires_at) {
+          const updateCountdown = () => {
+            const now = Math.floor(Date.now() / 1000);
+            const remaining = data.expires_at - now;
+
+            if (remaining <= 0) {
+              timeRemaining = 0;
+              // Auto-submit when time expires
+              if (view !== 'success') {
+                submitAssessment();
+              }
+            } else {
+              timeRemaining = remaining;
+            }
+          };
+
+          updateCountdown();
+          countdownInterval = window.setInterval(updateCountdown, 1000);
+        }
+      } catch (e: any) {
+        loadError = e.message || 'System error';
+        // Redirect back to intro page
+        window.location.href = `/assess?token=${token}`;
+      } finally {
+        loading = false;
       }
     });
 
@@ -166,7 +195,18 @@
       }
     }
   </script>
-  
+
+  {#if loading}
+    <div class="glass-panel-fixed p-12 rounded-xl text-center">
+      <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-blue-500 mx-auto mb-4"></div>
+      <p class="text-slate-300">Loading assessment...</p>
+    </div>
+  {:else if loadError}
+    <div class="glass-panel-fixed p-8 rounded-xl text-center">
+      <h2 class="text-xl font-bold text-white mb-2">Error</h2>
+      <p class="text-slate-300">{loadError}</p>
+    </div>
+  {:else}
   <div class="mb-6 flex items-center justify-between">
       <div class="flex items-center gap-3">
           {#if branding.logo}
@@ -329,7 +369,8 @@
           </div>
       {/if}
   </div>
-  
+  {/if}
+
   <style>
       .custom-scrollbar::-webkit-scrollbar { width: 6px; }
       .custom-scrollbar::-webkit-scrollbar-track { background: rgba(30, 41, 59, 0.5); }

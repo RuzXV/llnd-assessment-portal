@@ -2,22 +2,30 @@
     import { onMount } from 'svelte';
     import html2pdf from 'html2pdf.js';
 
-    export let attemptId: string;
-
+    let attemptId: string | null = null;
     let loading = true;
     let error = '';
     let report: any = null;
     let reportElement: HTMLElement;
     let isDownloading = false;
-  
+
     onMount(async () => {
+      // Extract attemptId from URL query parameter: /report?id=xxx
+      const urlParams = new URLSearchParams(window.location.search);
+      attemptId = urlParams.get('id');
+
+      if (!attemptId) {
+        window.location.href = '/dashboard';
+        return;
+      }
+
       const token = localStorage.getItem('llnd_token');
       if (!token) { window.location.href = '/'; return; }
-  
+
       try {
         const res = await fetch('/api/reports/generate', {
           method: 'POST',
-          headers: { 
+          headers: {
             'Authorization': `Bearer ${token}`,
             'Content-Type': 'application/json'
           },

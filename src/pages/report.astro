@@ -1,12 +1,6 @@
 ---
-import Layout from '../../layouts/Layout.astro';
-import ReportView from '../../components/admin/ReportView.svelte';
-
-const { id } = Astro.params;
-
-if (!id) {
-  return Astro.redirect('/dashboard');
-}
+import Layout from '../layouts/Layout.astro';
+import ReportView from '../components/admin/ReportView.svelte';
 ---
 
 <Layout title="Assessment Report">
@@ -26,7 +20,7 @@ if (!id) {
           <svg class="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
           Back to Dashboard
         </a>
-        <button 
+        <button
           onclick="window.print()"
           class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium flex items-center shadow-sm transition-all"
         >
@@ -35,7 +29,7 @@ if (!id) {
         </button>
       </div>
 
-      <ReportView client:only="svelte" attemptId={id} />
+      <ReportView client:only="svelte" />
     </div>
   </div>
 </Layout>

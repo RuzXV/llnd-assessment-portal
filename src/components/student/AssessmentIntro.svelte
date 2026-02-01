@@ -1,27 +1,27 @@
 <script lang="ts">
     import { onMount } from 'svelte';
 
-    interface Props {
-        token?: string;
-    }
-    let { token }: Props = $props();
-    
+    let token = $state<string | null>(null);
     let loading = $state(true);
     let error = $state<string | null>(null);
     let assessmentData = $state<any>(null);
-    
+
     let studentNameInput = $state('');
     let studentIdInput = $state('');
     let showNameInput = $state(false);
     let consentChecked = $state(false);
 
     onMount(async () => {
+      // Extract token from URL query parameter: /assess?token=xxx
+      const urlParams = new URLSearchParams(window.location.search);
+      token = urlParams.get('token');
+
       if (!token) {
           error = "Invalid Token";
           loading = false;
           return;
       }
-  
+
       try {
         const res = await fetch(`/api/assessments/${token}`);
         
@@ -58,7 +58,7 @@
                 sessionStorage.setItem(`student_id_${token}`, studentIdInput);
             }
         }
-        window.location.href = `/assess/start/${token}`;
+        window.location.href = `/assess-start?token=${token}`;
     }
 </script>
 
