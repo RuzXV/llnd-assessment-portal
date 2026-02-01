@@ -2,7 +2,7 @@
 
 @layer base {
   :root {
-    --app-bg: theme('colors.gray.200');
+    --app-bg: theme('colors.gray.100');
     --app-text: theme('colors.slate.900');
   }
 
@@ -16,6 +16,15 @@
     color: var(--app-text);
     transition: background-color 0.3s ease, color 0.3s ease;
   }
+
+  /* Ensure good text contrast in light mode */
+  h1, h2, h3, h4, h5, h6 {
+    color: theme('colors.slate.900');
+  }
+
+  :is(.dark h1), :is(.dark h2), :is(.dark h3), :is(.dark h4), :is(.dark h5), :is(.dark h6) {
+    color: theme('colors.white');
+  }
 }
 
 @layer components {
@@ -24,13 +33,16 @@
     -webkit-backdrop-filter: blur(12px);
     border: 1px solid;
     transition: all 0.3s ease;
-    background-color: rgba(255, 255, 255, 0.7);
-    border-color: rgba(255, 255, 255, 0.4);
+    background-color: rgba(255, 255, 255, 0.85);
+    border-color: rgba(203, 213, 225, 0.8);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    color: theme('colors.slate.800');
   }
 
   :is(.dark .glass-panel) {
     background-color: rgba(30, 41, 59, 0.6);
     border-color: rgba(51, 65, 85, 0.5);
+    color: theme('colors.slate.100');
   }
 
   .glass-panel-fixed {
@@ -57,14 +69,21 @@
   }
 
   .glass-input {
-    background-color: rgba(255, 255, 255, 0.5);
-    border: 1px solid rgb(229, 231, 235);
+    background-color: rgba(255, 255, 255, 0.9);
+    border: 1px solid rgb(203, 213, 225);
     transition: all 0.2s;
+    color: theme('colors.slate.900');
   }
-  
+
   .glass-input:focus {
-    background-color: rgba(255, 255, 255, 0.8);
+    background-color: rgba(255, 255, 255, 1);
+    border-color: rgb(59, 130, 246);
     outline: none;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  }
+
+  .glass-input::placeholder {
+    color: theme('colors.slate.400');
   }
 
   :is(.dark .glass-input) {
