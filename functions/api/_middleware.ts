@@ -14,8 +14,7 @@ export const onRequest: PagesFunction<Env, any, Data> = async (context) => {
 
   if (
     url.pathname.includes('/api/auth/login') ||
-    url.pathname.includes('/api/assessments/') ||
-    url.pathname.includes('/api/admin/seed-admin')
+    url.pathname.includes('/api/assessments/')
   ) {
     return next();
   }
