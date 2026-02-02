@@ -533,4 +533,3 @@
         </div>
     </div>
 {/if}
-</script>
