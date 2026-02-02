@@ -1,5 +1,6 @@
 <script lang="ts">
   import { onMount } from 'svelte';
+  import BulkUpload from './BulkUpload.svelte';
 
   let rawSeats = $state<any[]>([]);
   let assessments = $state<any[]>([]);
@@ -177,32 +178,32 @@
       <div class="glass-panel rounded-xl overflow-hidden p-6 relative group">
           <dt class="text-sm font-medium text-slate-500 dark:text-slate-400 truncate">Total Seats Available</dt>
           <dd class="mt-2 text-3xl font-bold text-slate-900 dark:text-white">{loading ? '-' : totalSeatsRemaining}</dd>
-          <div class="absolute right-4 top-4 opacity-40 group-hover:opacity-60 transition-opacity">
-              <svg class="w-12 h-12 text-blue-500 dark:text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+          <div class="absolute right-4 top-4">
+              <svg class="w-12 h-12 text-blue-500 drop-shadow-lg" fill="currentColor" viewBox="0 0 24 24"><path d="M19 11H5a3 3 0 00-3 3v6a3 3 0 003 3h14a3 3 0 003-3v-6a3 3 0 00-3-3zm-7 8a2 2 0 110-4 2 2 0 010 4zm6-11V6a3 3 0 00-3-3H9a3 3 0 00-3 3v2H4V6a5 5 0 015-5h6a5 5 0 015 5v2h-2z"/></svg>
           </div>
       </div>
 
       <div class="glass-panel rounded-xl overflow-hidden p-6 relative group">
           <dt class="text-sm font-medium text-slate-500 dark:text-slate-400 truncate">Assessments Issued</dt>
           <dd class="mt-2 text-3xl font-bold text-slate-900 dark:text-white">{loading ? '-' : totalIssued}</dd>
-          <div class="absolute right-4 top-4 opacity-40 group-hover:opacity-60 transition-opacity">
-               <svg class="w-12 h-12 text-purple-500 dark:text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 4v16m8-8H4"></path></svg>
+          <div class="absolute right-4 top-4">
+               <svg class="w-12 h-12 text-purple-500 drop-shadow-lg" fill="currentColor" viewBox="0 0 24 24"><path d="M19 3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V5a2 2 0 00-2-2zm-4 10h-2v2a1 1 0 01-2 0v-2H9a1 1 0 010-2h2V9a1 1 0 012 0v2h2a1 1 0 010 2z"/></svg>
           </div>
       </div>
 
       <div class="glass-panel rounded-xl overflow-hidden p-6 relative group">
           <dt class="text-sm font-medium text-slate-500 dark:text-slate-400 truncate">Completed</dt>
           <dd class="mt-2 text-3xl font-bold text-slate-900 dark:text-white">{loading ? '-' : totalCompleted}</dd>
-          <div class="absolute right-4 top-4 opacity-40 group-hover:opacity-60 transition-opacity">
-              <svg class="w-12 h-12 text-green-500 dark:text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+          <div class="absolute right-4 top-4">
+              <svg class="w-12 h-12 text-emerald-500 drop-shadow-lg" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
           </div>
       </div>
 
       <div class="glass-panel rounded-xl overflow-hidden p-6 relative group">
           <dt class="text-sm font-medium text-slate-500 dark:text-slate-400 truncate">Students Flagged for Support</dt>
           <dd class="mt-2 text-3xl font-bold text-slate-900 dark:text-white">{loading ? '-' : studentsFlaggedForSupport}</dd>
-          <div class="absolute right-4 top-4 opacity-40 group-hover:opacity-60 transition-opacity">
-              <svg class="w-12 h-12 text-orange-500 dark:text-orange-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+          <div class="absolute right-4 top-4">
+              <svg class="w-12 h-12 text-amber-500 drop-shadow-lg" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2L1 21h22L12 2zm0 3.99L19.53 19H4.47L12 5.99zM11 10v4h2v-4h-2zm0 6v2h2v-2h-2z"/></svg>
           </div>
       </div>
   </div>
@@ -302,6 +303,19 @@
                       </div>
                   </div>
               {/if}
+
+              <!-- Divider -->
+              <div class="relative my-6">
+                  <div class="absolute inset-0 flex items-center">
+                      <div class="w-full border-t border-slate-200 dark:border-slate-700"></div>
+                  </div>
+                  <div class="relative flex justify-center text-xs">
+                      <span class="px-2 bg-white/80 dark:bg-slate-800/80 text-slate-500 dark:text-slate-400">or upload multiple</span>
+                  </div>
+              </div>
+
+              <!-- Bulk Upload -->
+              <BulkUpload {availableSeats} oncomplete={loadDashboardData} />
           </div>
       </div>
 
@@ -368,7 +382,7 @@
                               </tr>
 
                               {#if expandedRows.has(assessment.attempt_id)}
-                                  <tr class="bg-slate-50/50 dark:bg-slate-800/30">
+                                  <tr class="bg-slate-200/80 dark:bg-slate-700/60 border-l-4 border-blue-500">
                                       <td colspan="5" class="px-6 py-4">
                                           <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
                                               <div class="space-y-2">
