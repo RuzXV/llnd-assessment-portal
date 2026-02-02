@@ -5,6 +5,19 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
   const token = params.token as string;
 
   try {
+    // First, check if the attempt exists at all (without the JOIN)
+    const attemptCheck = await env.DB.prepare(`
+      SELECT attempt_id, tenant_id, version_id, status FROM assessment_attempts WHERE token_hash = ?
+    `).bind(token).first();
+
+    if (!attemptCheck) {
+      return new Response(JSON.stringify({ error: 'Invalid assessment link - token not found' }), {
+        status: 404,
+        headers: { 'Content-Type': 'application/json' }
+      });
+    }
+
+    // Now get the full attempt with tenant info
     const attempt = await env.DB.prepare(`
       SELECT
         a.attempt_id, a.student_name, a.student_id, a.status, a.version_id, a.draft_responses, a.expires_at,
@@ -15,7 +28,10 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
     `).bind(token).first();
 
     if (!attempt) {
-      return new Response(JSON.stringify({ error: 'Invalid assessment link' }), {
+      return new Response(JSON.stringify({
+        error: 'Invalid assessment link - tenant join failed',
+        debug: { attempt_id: attemptCheck.attempt_id, tenant_id: attemptCheck.tenant_id }
+      }), {
         status: 404,
         headers: { 'Content-Type': 'application/json' }
       });
