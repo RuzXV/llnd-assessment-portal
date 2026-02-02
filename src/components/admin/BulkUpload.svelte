@@ -36,25 +36,50 @@
     }
 
     function downloadTemplate() {
-        // Create CSV template with headers and example rows
-        const headers = ['student_name', 'student_id', 'email', 'assessment_type'];
+        // Build the template following the user's format:
+        // Row 1-2: Instructions
+        // Row 3: Empty
+        // Row 4: "Your Available Assessments" header
+        // Row 5+: List each assessment type with seat count
+        // 2 empty rows gap
+        // Headers row
+        // Example data rows
 
-        // Build example rows showing available assessment types
+        const rows: string[] = [];
+
+        // Row 1: Instructions
+        rows.push('# INSTRUCTIONS: Fill in student details below.,,,');
+
+        // Row 2: Required fields note
+        rows.push('"# Student Name, Email & Assessment Type are REQUIRED. Student ID is OPTIONAL.",,,');
+
+        // Row 3: Empty
+        rows.push(',,,');
+
+        // Row 4: Available Assessments header
+        rows.push('Your Available Assessments,,,');
+
+        // List each available assessment type with seat count
+        for (const seat of availableSeats) {
+            const name = seat.product_name || seat.product_id;
+            rows.push(`${name} (${seat.count}),,,`);
+        }
+
+        // 2 empty rows gap
+        rows.push(',,,');
+        rows.push(',,,');
+
+        // Headers row
+        rows.push('Student Name,Student ID (Optional),Email,Assessment Type');
+
+        // Example data rows
         const exampleAssessmentType = availableSeats.length > 0
             ? (availableSeats[0].product_name || availableSeats[0].product_id)
-            : 'LLND Core';
+            : 'Certificate II - Trade Stream';
 
-        const rows = [
-            headers.join(','),
-            '# INSTRUCTIONS: Fill in student details below. Delete these example rows first.',
-            `# Available assessment types: ${assessmentTypes || 'None available'}`,
-            `# student_name is REQUIRED. student_id and email are optional.`,
-            '',
-            `John Smith,STU001,john.smith@email.com,${exampleAssessmentType}`,
-            `Jane Doe,STU002,jane.doe@email.com,${exampleAssessmentType}`,
-            `Bob Wilson,STU003,,${exampleAssessmentType}`,
-            ''
-        ];
+        rows.push(`John Smith,STU001,john.smith@email.com,${exampleAssessmentType}`);
+        rows.push(`Jane Doe,STU002,jane.doe@email.com,${exampleAssessmentType}`);
+        rows.push(`Bob Wilson,STU003,bob.wilson@email.com,${exampleAssessmentType}`);
 
         const csvContent = rows.join('\n');
         const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
@@ -103,33 +128,61 @@
 
     async function parseCSV(file: File) {
         const text = await file.text();
-        const lines = text.split('\n').map(line => line.trim()).filter(line => line && !line.startsWith('#'));
+        const allLines = text.split('\n').map(line => line.trim());
 
-        if (lines.length < 2) {
-            validationErrors = ['CSV file must have a header row and at least one data row'];
+        // Find the header row - look for "Student Name" in the first column
+        let headerRowIndex = -1;
+        for (let i = 0; i < allLines.length; i++) {
+            const line = allLines[i];
+            const firstCell = line.split(',')[0]?.trim().toLowerCase();
+            if (firstCell === 'student name') {
+                headerRowIndex = i;
+                break;
+            }
+        }
+
+        if (headerRowIndex === -1) {
+            validationErrors = ['Could not find header row. Make sure "Student Name" is in the first column of your headers.'];
             return;
         }
 
-        const headers = lines[0].split(',').map(h => h.trim().toLowerCase());
-        const requiredHeaders = ['student_name', 'assessment_type'];
-        const missingHeaders = requiredHeaders.filter(h => !headers.includes(h));
+        // Parse headers
+        const headerLine = allLines[headerRowIndex];
+        const headers = headerLine.split(',').map(h => h.trim().toLowerCase().replace(/\s*\(optional\)/i, '').replace(/\s+/g, '_'));
 
-        if (missingHeaders.length > 0) {
-            validationErrors = [`Missing required columns: ${missingHeaders.join(', ')}`];
-            return;
-        }
+        // Map header names to standard names
+        const headerMap: Record<string, string> = {
+            'student_name': 'student_name',
+            'student_id': 'student_id',
+            'email': 'email',
+            'assessment_type': 'assessment_type'
+        };
 
         const nameIdx = headers.indexOf('student_name');
         const idIdx = headers.indexOf('student_id');
         const emailIdx = headers.indexOf('email');
         const typeIdx = headers.indexOf('assessment_type');
 
+        if (nameIdx === -1 || typeIdx === -1) {
+            validationErrors = ['Missing required columns: Student Name and Assessment Type are required'];
+            return;
+        }
+
+        if (emailIdx === -1) {
+            validationErrors = ['Missing required column: Email is required'];
+            return;
+        }
+
         const data: any[] = [];
         const errors: string[] = [];
-        const availableTypes = availableSeats.map(s => (s.product_name || s.product_id).toLowerCase());
 
-        for (let i = 1; i < lines.length; i++) {
-            const values = parseCSVLine(lines[i]);
+        // Process data rows (everything after the header row)
+        for (let i = headerRowIndex + 1; i < allLines.length; i++) {
+            const line = allLines[i];
+            // Skip empty lines and comment lines
+            if (!line || line.startsWith('#') || line.startsWith('"#')) continue;
+
+            const values = parseCSVLine(line);
             if (values.length === 0 || values.every(v => !v.trim())) continue;
 
             const studentName = values[nameIdx]?.trim() || '';
@@ -140,6 +193,11 @@
             // Validation
             if (!studentName) {
                 errors.push(`Row ${i + 1}: Student name is required`);
+                continue;
+            }
+
+            if (!email) {
+                errors.push(`Row ${i + 1}: Email is required`);
                 continue;
             }
 
