@@ -6,7 +6,7 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
 
   const attempt = await env.DB.prepare(`
     SELECT
-      a.attempt_id, a.student_name, a.status, a.version_id, a.draft_responses, a.expires_at,
+      a.attempt_id, a.student_name, a.student_id, a.status, a.version_id, a.draft_responses, a.expires_at,
       t.name as rto_name, t.logo_url, t.brand_primary_color
     FROM assessment_attempts a
     JOIN tenants t ON a.tenant_id = t.tenant_id
@@ -48,7 +48,7 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
   }));
 
   return new Response(JSON.stringify({
-    student: { name: attempt.student_name },
+    student: { name: attempt.student_name, id: attempt.student_id },
     branding: {
       rto_name: attempt.rto_name,
       logo: attempt.logo_url,

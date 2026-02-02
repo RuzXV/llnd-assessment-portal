@@ -13,11 +13,14 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
           SELECT
             a.attempt_id,
             a.student_name,
+            a.student_id,
+            a.token_hash,
             a.status,
             a.started_at,
             a.submitted_at,
             a.total_score,
             a.outcome_flag,
+            a.domain_breakdown,
             p.name as product_name
           FROM assessment_attempts a
           JOIN seats s ON a.seat_id = s.seat_id
