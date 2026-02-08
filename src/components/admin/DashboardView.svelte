@@ -33,7 +33,6 @@
   let totalSeatsRemaining = $derived(availableSeats.reduce((acc, s) => acc + s.count, 0));
   let totalIssued = $derived(assessments.length);
   let totalCompleted = $derived(assessments.filter(a => a.status === 'submitted').length);
-  let studentsFlaggedForSupport = $derived(assessments.filter(a => a.status === 'submitted' && a.outcome_flag === 'support_required').length);
 
   // Filtered assessments based on search
   let filteredAssessments = $derived(
@@ -174,7 +173,7 @@
       </div>
   {/if}
 
-  <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+  <div class="grid grid-cols-1 gap-5 sm:grid-cols-3">
       <div class="glass-panel rounded-xl overflow-hidden p-6 relative group">
           <dt class="text-sm font-medium text-slate-500 dark:text-slate-400 truncate">Total Seats Available</dt>
           <dd class="mt-2 text-3xl font-bold text-slate-900 dark:text-white">{loading ? '-' : totalSeatsRemaining}</dd>
@@ -196,14 +195,6 @@
           <dd class="mt-2 text-3xl font-bold text-slate-900 dark:text-white">{loading ? '-' : totalCompleted}</dd>
           <div class="absolute right-4 top-4 opacity-80 group-hover:opacity-100 transition-opacity">
               <svg class="w-12 h-12" fill="none" viewBox="0 0 24 24" stroke="#10b981" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-          </div>
-      </div>
-
-      <div class="glass-panel rounded-xl overflow-hidden p-6 relative group">
-          <dt class="text-sm font-medium text-slate-500 dark:text-slate-400 truncate">Students Flagged for Support</dt>
-          <dd class="mt-2 text-3xl font-bold text-slate-900 dark:text-white">{loading ? '-' : studentsFlaggedForSupport}</dd>
-          <div class="absolute right-4 top-4 opacity-80 group-hover:opacity-100 transition-opacity">
-              <svg class="w-12 h-12" fill="none" viewBox="0 0 24 24" stroke="#f97316" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
           </div>
       </div>
   </div>
