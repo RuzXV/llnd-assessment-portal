@@ -1,4 +1,4 @@
-import { scoreAttempt, generateReportJSON, Question, Response } from '../../../utils/scoring';
+import { scoreAttempt, generateReportJSON, Question, StudentResponse } from '../../../utils/scoring';
 
 export const onRequestPost: PagesFunction<Env> = async (context) => {
   const { request, params, env } = context;
@@ -46,7 +46,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
     }));
 
     // Map responses to scoring format
-    const responsesForScoring: Response[] = responses.map((r: any) => ({
+    const responsesForScoring: StudentResponse[] = responses.map((r: any) => ({
       questionId: r.questionId,
       answer: String(r.answer || '')
     }));

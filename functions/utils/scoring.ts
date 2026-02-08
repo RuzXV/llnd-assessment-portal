@@ -21,7 +21,7 @@ export interface Question {
   weight: number;
 }
 
-export interface Response {
+export interface StudentResponse {
   questionId: string;
   answer: string;
 }
@@ -164,7 +164,7 @@ function scoreWritingQuestion(
 // Main scoring function
 export function scoreAttempt(
   questions: Question[],
-  responses: Response[]
+  responses: StudentResponse[]
 ): ScoringResult {
   const responseMap = new Map(responses.map(r => [r.questionId, r.answer]));
   const questionScores: QuestionScore[] = [];
