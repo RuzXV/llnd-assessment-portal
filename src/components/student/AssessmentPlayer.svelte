@@ -251,10 +251,42 @@
       
       {#if view === 'question'}
           <div class="flex-1">
-               <h2 class="text-xl md:text-2xl font-bold text-white mb-6">
+              <!-- Context Section -->
+              {#if currentQuestion.context_text || currentQuestion.context_table}
+                  <div class="mb-6 p-4 rounded-xl bg-slate-800/60 border border-slate-700/50">
+                      {#if currentQuestion.context_text}
+                          <p class="text-slate-300 text-sm whitespace-pre-line leading-relaxed">{currentQuestion.context_text}</p>
+                      {/if}
+                      {#if currentQuestion.context_table}
+                          {@const tableData = typeof currentQuestion.context_table === 'string' ? JSON.parse(currentQuestion.context_table) : currentQuestion.context_table}
+                          <div class="mt-3 overflow-x-auto">
+                              <table class="w-full text-sm border-collapse">
+                                  <thead>
+                                      <tr class="border-b border-slate-600">
+                                          {#each tableData.headers as header}
+                                              <th class="text-left p-2 text-slate-400 font-semibold">{header}</th>
+                                          {/each}
+                                      </tr>
+                                  </thead>
+                                  <tbody>
+                                      {#each tableData.rows as row}
+                                          <tr class="border-b border-slate-700/50">
+                                              {#each row as cell}
+                                                  <td class="p-2 text-slate-300">{cell}</td>
+                                              {/each}
+                                          </tr>
+                                      {/each}
+                                  </tbody>
+                              </table>
+                          </div>
+                      {/if}
+                  </div>
+              {/if}
+
+              <h2 class="text-xl md:text-2xl font-bold text-white mb-6">
                   {currentQuestion.text}
               </h2>
-  
+
               <div class="space-y-3">
                   {#if currentQuestion.type === 'multiple_choice' || currentQuestion.type === 'true_false'}
                       {#each currentQuestion.options as option}

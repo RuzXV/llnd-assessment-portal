@@ -337,14 +337,14 @@
               </div>
 
               <div class="overflow-x-auto flex-1">
-                  <table class="min-w-full divide-y divide-gray-200/50 dark:divide-gray-700/50">
+                  <table class="min-w-full divide-y divide-gray-200/50 dark:divide-gray-700/50 table-fixed">
                       <thead class="bg-gray-50/50 dark:bg-slate-800/50">
                           <tr>
-                              <th class="px-6 py-3 text-left text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Student</th>
-                              <th class="px-6 py-3 text-left text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Type</th>
-                              <th class="px-6 py-3 text-left text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Date</th>
-                              <th class="px-6 py-3 text-left text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Status</th>
-                              <th class="relative px-6 py-3"><span class="sr-only">Actions</span></th>
+                              <th class="px-6 py-3 text-left text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider w-1/5">Student</th>
+                              <th class="px-6 py-3 text-left text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider w-2/5">Type</th>
+                              <th class="px-6 py-3 text-left text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider w-1/6">Date</th>
+                              <th class="px-6 py-3 text-left text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider w-1/6">Status</th>
+                              <th class="relative px-6 py-3 w-12"><span class="sr-only">Actions</span></th>
                           </tr>
                       </thead>
                       <tbody class="divide-y divide-gray-200/50 dark:divide-gray-700/50">
@@ -359,8 +359,8 @@
                                           <div class="text-xs text-slate-500 dark:text-slate-400">{assessment.student_id}</div>
                                       {/if}
                                   </td>
-                                  <td class="px-6 py-4 whitespace-nowrap">
-                                      <div class="text-sm text-slate-600 dark:text-slate-300">{assessment.product_name || 'Assessment'}</div>
+                                  <td class="px-6 py-4">
+                                      <div class="text-sm text-slate-600 dark:text-slate-300 max-w-xs">{assessment.product_name || 'Assessment'}</div>
                                   </td>
                                   <td class="px-6 py-4 whitespace-nowrap">
                                       <div class="text-sm text-slate-500 dark:text-slate-400">

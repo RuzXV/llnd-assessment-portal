@@ -1,5 +1,8 @@
 @import "tailwindcss";
 
+/* Configure dark mode to use the 'dark' class */
+@custom-variant dark (&:where(.dark, .dark *));
+
 @layer base {
   :root {
     --app-bg: theme('colors.gray.100');
@@ -16,24 +19,6 @@
     color: var(--app-text);
     transition: background-color 0.3s ease, color 0.3s ease;
   }
-
-  /* Ensure good text contrast in light mode */
-  h1, h2, h3, h4, h5, h6 {
-    color: theme('colors.slate.900');
-  }
-
-  :is(.dark h1), :is(.dark h2), :is(.dark h3), :is(.dark h4), :is(.dark h5), :is(.dark h6) {
-    color: theme('colors.white');
-  }
-
-  /* Force dark text in light mode for all common text elements */
-  p, span, label, td, th, dt, dd, li {
-    color: theme('colors.slate.700');
-  }
-
-  :is(.dark p), :is(.dark span), :is(.dark label), :is(.dark td), :is(.dark th), :is(.dark dt), :is(.dark dd), :is(.dark li) {
-    color: theme('colors.slate.300');
-  }
 }
 
 @layer components {
@@ -47,25 +32,9 @@
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   }
 
-  .glass-panel * {
-    color: theme('colors.slate.800');
-  }
-
-  .glass-panel h1, .glass-panel h2, .glass-panel h3, .glass-panel h4, .glass-panel h5, .glass-panel h6 {
-    color: theme('colors.slate.900');
-  }
-
   :is(.dark .glass-panel) {
     background-color: rgba(30, 41, 59, 0.6);
     border-color: rgba(51, 65, 85, 0.5);
-  }
-
-  :is(.dark .glass-panel) * {
-    color: theme('colors.slate.200');
-  }
-
-  :is(.dark .glass-panel) h1, :is(.dark .glass-panel) h2, :is(.dark .glass-panel) h3 {
-    color: theme('colors.white');
   }
 
   .glass-panel-fixed {

@@ -63,6 +63,7 @@ CREATE TABLE IF NOT EXISTS assessment_attempts (
     attempt_id TEXT PRIMARY KEY,
     tenant_id TEXT NOT NULL,
     seat_id TEXT NOT NULL UNIQUE,
+    version_id TEXT,
     token_hash TEXT NOT NULL UNIQUE,
     student_name TEXT,
     student_id TEXT,
@@ -70,10 +71,18 @@ CREATE TABLE IF NOT EXISTS assessment_attempts (
     issued_at TEXT DEFAULT (datetime('now')),
     started_at TEXT,
     submitted_at TEXT,
+    expires_at INTEGER,
+    draft_responses TEXT,
+    total_score REAL,
+    domain_breakdown TEXT,
+    report_json TEXT, -- Full structured report data
+    benchmark_version TEXT DEFAULT 'AQF3_V1',
+    overall_outcome TEXT, -- 'meets_confident', 'meets_monitor', 'support_required'
     report_file_path TEXT,
     outcome_flag TEXT,
     FOREIGN KEY (tenant_id) REFERENCES tenants(tenant_id) ON DELETE CASCADE,
-    FOREIGN KEY (seat_id) REFERENCES seats(seat_id)
+    FOREIGN KEY (seat_id) REFERENCES seats(seat_id),
+    FOREIGN KEY (version_id) REFERENCES assessment_versions(version_id)
 );
 
 -- ============================================
@@ -84,6 +93,7 @@ CREATE TABLE IF NOT EXISTS responses (
     attempt_id TEXT NOT NULL,
     question_id TEXT NOT NULL,
     response_data TEXT,
+    is_correct INTEGER DEFAULT 0,
     points_awarded REAL DEFAULT 0,
     acsf_level_achieved INTEGER,
     FOREIGN KEY (attempt_id) REFERENCES assessment_attempts(attempt_id) ON DELETE CASCADE
@@ -107,20 +117,25 @@ CREATE TABLE IF NOT EXISTS audit_logs (
 -- ============================================
 CREATE TABLE IF NOT EXISTS questions (
     question_id TEXT PRIMARY KEY,
-    product_id TEXT NOT NULL,
-    question_text TEXT NOT NULL,
-    question_type TEXT CHECK(question_type IN ('multiple_choice', 'true_false', 'short_answer', 'essay')) NOT NULL,
+    version_id TEXT NOT NULL,
+    product_id TEXT,
+    text TEXT NOT NULL,
+    type TEXT CHECK(type IN ('multiple_choice', 'true_false', 'short_answer', 'numeric')) NOT NULL,
+    response_type TEXT CHECK(response_type IN ('mcq', 'numeric', 'short_text')) DEFAULT 'mcq',
     options TEXT, -- JSON array for multiple choice options
-    correct_answer TEXT,
-    points_possible REAL DEFAULT 1.0,
-    acsf_domain TEXT NOT NULL, -- e.g., 'Learning', 'Reading', 'Writing', 'Oral Communication', 'Numeracy'
-    acsf_skill TEXT NOT NULL,
-    acsf_level INTEGER CHECK(acsf_level BETWEEN 1 AND 5) NOT NULL,
-    difficulty_weight REAL DEFAULT 1.0,
+    correct_response TEXT,
+    max_score REAL DEFAULT 1.0, -- For writing items, max is 3
+    weight REAL DEFAULT 1.0,
+    domain TEXT NOT NULL, -- Reading, Writing, Numeracy, Oral, Digital
+    acsf_level INTEGER CHECK(acsf_level BETWEEN 2 AND 5) NOT NULL,
+    difficulty_tag TEXT CHECK(difficulty_tag IN ('core', 'stretch')) DEFAULT 'core',
+    order_index INTEGER DEFAULT 0,
     context_text TEXT, -- Optional context for the question
     context_image_url TEXT, -- Optional image
+    context_table TEXT, -- JSON for table data if needed
     active INTEGER DEFAULT 1,
     created_at TEXT DEFAULT (datetime('now')),
+    FOREIGN KEY (version_id) REFERENCES assessment_versions(version_id),
     FOREIGN KEY (product_id) REFERENCES assessment_products(product_id)
 );
 
@@ -157,16 +172,20 @@ CREATE TABLE IF NOT EXISTS assessment_versions (
 CREATE TABLE IF NOT EXISTS domain_scores (
     score_id TEXT PRIMARY KEY,
     attempt_id TEXT NOT NULL,
-    acsf_domain TEXT NOT NULL,
-    total_points REAL DEFAULT 0,
-    max_points REAL DEFAULT 0,
+    domain TEXT NOT NULL, -- Reading, Writing, Numeracy, Oral, Digital
+    raw_score REAL DEFAULT 0,
+    max_score REAL DEFAULT 0,
     percentage REAL DEFAULT 0,
-    acsf_level_achieved INTEGER,
-    outcome TEXT CHECK(outcome IN ('meets', 'borderline', 'support_required')),
-    justification TEXT, -- AI-generated or template-based justification
+    acsf2_percent REAL DEFAULT 0,
+    acsf3_core_percent REAL DEFAULT 0,
+    acsf3_stretch_percent REAL DEFAULT 0,
+    estimated_acsf_band TEXT, -- 'ACSF 3 (confident)', 'ACSF 3 (monitor)', 'ACSF 2-3 (borderline)', 'Below ACSF 2'
+    outcome TEXT CHECK(outcome IN ('meets_expected', 'monitor', 'support_required')),
+    justification TEXT,
+    strategies TEXT, -- JSON array of recommended support strategies
     created_at TEXT DEFAULT (datetime('now')),
     FOREIGN KEY (attempt_id) REFERENCES assessment_attempts(attempt_id) ON DELETE CASCADE,
-    UNIQUE(attempt_id, acsf_domain)
+    UNIQUE(attempt_id, domain)
 );
 
 -- ============================================
@@ -182,8 +201,10 @@ CREATE INDEX IF NOT EXISTS idx_responses_attempt ON responses(attempt_id);
 CREATE INDEX IF NOT EXISTS idx_audit_tenant ON audit_logs(tenant_id);
 CREATE INDEX IF NOT EXISTS idx_audit_timestamp ON audit_logs(timestamp);
 CREATE INDEX IF NOT EXISTS idx_questions_product ON questions(product_id);
-CREATE INDEX IF NOT EXISTS idx_questions_acsf ON questions(acsf_domain, acsf_level);
+CREATE INDEX IF NOT EXISTS idx_questions_version ON questions(version_id);
+CREATE INDEX IF NOT EXISTS idx_questions_acsf ON questions(domain, acsf_level);
 CREATE INDEX IF NOT EXISTS idx_questions_active ON questions(active);
+CREATE INDEX IF NOT EXISTS idx_attempts_version ON assessment_attempts(version_id);
 CREATE INDEX IF NOT EXISTS idx_reports_attempt ON reports(attempt_id);
 CREATE INDEX IF NOT EXISTS idx_versions_product ON assessment_versions(product_id);
 CREATE INDEX IF NOT EXISTS idx_versions_active ON assessment_versions(is_active);
