@@ -70,7 +70,7 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
     }
 
     const questions = await env.DB.prepare(`
-        SELECT question_id, text, type, options, domain
+        SELECT question_id, text, type, options, domain, context_text, context_table
         FROM questions
         WHERE version_id = ?
         ORDER BY order_index ASC
@@ -78,7 +78,8 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
 
     const formattedQuestions = questions.results.map((q: any) => ({
         ...q,
-        options: q.options ? JSON.parse(q.options) : null
+        options: q.options ? JSON.parse(q.options) : null,
+        context_table: q.context_table ? JSON.parse(q.context_table) : null
     }));
 
     return new Response(JSON.stringify({
