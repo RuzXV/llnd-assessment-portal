@@ -86,10 +86,16 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
     }
 
     // Insert domain scores
+    // DB column is acsf_domain (not domain), and outcome CHECK allows: meets, borderline, support_required
     for (const ds of scoringResult.domainScores) {
+      // Map scoring engine outcome values to DB CHECK constraint values
+      const dbOutcome = ds.outcome === 'meets_expected' ? 'meets'
+        : ds.outcome === 'monitor' ? 'borderline'
+        : 'support_required';
+
       dbStatements.push(env.DB.prepare(`
         INSERT OR REPLACE INTO domain_scores
-        (score_id, attempt_id, domain, raw_score, max_score, percentage,
+        (score_id, attempt_id, acsf_domain, raw_score, max_score, percentage,
          acsf2_percent, acsf3_core_percent, acsf3_stretch_percent,
          estimated_acsf_band, outcome, justification, strategies)
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
@@ -104,7 +110,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
         ds.acsf3CorePercent,
         ds.acsf3StretchPercent,
         ds.estimatedACSFBand,
-        ds.outcome,
+        dbOutcome,
         ds.justification,
         JSON.stringify(ds.strategies)
       ));

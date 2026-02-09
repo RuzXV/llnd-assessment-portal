@@ -144,14 +144,29 @@
       }
   }
 
-  function formatDate(isoString: string | null) {
-      if (!isoString) return 'Not started';
-      return new Date(isoString).toLocaleDateString();
+  function parseDate(value: string | number | null): Date | null {
+      if (!value) return null;
+      if (typeof value === 'string' && /^\d+$/.test(value)) {
+          return new Date(parseInt(value) * 1000);
+      }
+      if (typeof value === 'number') {
+          return new Date(value < 1e12 ? value * 1000 : value);
+      }
+      return new Date(value);
   }
 
-  function formatDateTime(isoString: string | null) {
-      if (!isoString) return '-';
-      return new Date(isoString).toLocaleString();
+  function formatDate(value: string | number | null) {
+      if (!value) return 'Not started';
+      const d = parseDate(value);
+      if (!d || isNaN(d.getTime())) return 'Not started';
+      return d.toLocaleDateString();
+  }
+
+  function formatDateTime(value: string | number | null) {
+      if (!value) return '-';
+      const d = parseDate(value);
+      if (!d || isNaN(d.getTime())) return '-';
+      return d.toLocaleString();
   }
 
   function getAssessmentLink(assessment: any) {

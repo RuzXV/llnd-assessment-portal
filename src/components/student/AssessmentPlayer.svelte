@@ -394,10 +394,9 @@
                   <svg class="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
               </div>
               <h2 class="text-3xl font-bold text-white mb-4">Assessment Submitted</h2>
-              <p class="text-slate-400 max-w-md mx-auto mb-8">
+              <p class="text-slate-400 max-w-md mx-auto">
                   Thank you. Your results have been securely recorded. You may now close this window.
               </p>
-              <a href="/" class="text-sm text-blue-400 hover:text-blue-300 underline">Return to Home</a>
           </div>
       {/if}
   </div>

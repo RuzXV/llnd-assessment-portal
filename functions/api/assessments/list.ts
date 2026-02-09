@@ -16,6 +16,7 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
             a.student_id,
             a.token_hash,
             a.status,
+            a.issued_at,
             a.started_at,
             a.submitted_at,
             a.total_score,
