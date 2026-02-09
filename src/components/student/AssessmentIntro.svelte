@@ -88,8 +88,8 @@
   </div>
 {:else}
   <div class="glass-panel-fixed p-8 rounded-xl max-w-2xl mx-auto">
-      <h1 class="text-3xl font-bold text-white mb-4">{assessmentData.title || 'Assessment'}</h1>
-      <p class="text-slate-300 mb-6">{assessmentData.description || 'Welcome to your assessment.'}</p>
+      <h1 class="text-3xl font-bold text-white mb-4">LLND Assessment</h1>
+      <p class="text-slate-300 mb-6">Welcome to your {assessmentData.product_name || 'LLND'} assessment.</p>
 
       <!-- Assessment Context Info -->
       <div class="mb-6 bg-slate-800/50 p-6 rounded-lg border border-slate-700">
@@ -161,7 +161,7 @@
       {/if}
 
       <div class="mt-8">
-          <button onclick={startAssessment} class="w-full px-6 py-3 bg-blue-600 hover:bg-blue-500 text-white rounded-lg font-bold transition-colors">
+          <button onclick={startAssessment} disabled={!consentChecked} class="w-full px-6 py-3 bg-blue-600 hover:bg-blue-500 text-white rounded-lg font-bold transition-colors disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-blue-600">
               Start Assessment
           </button>
       </div>

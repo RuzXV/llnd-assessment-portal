@@ -1,10 +1,6 @@
 <script lang="ts">
-    import { createEventDispatcher } from 'svelte';
-
-    const dispatch = createEventDispatcher();
-
     // Props
-    let { availableSeats = [] }: { availableSeats: any[] } = $props();
+    let { availableSeats = [], oncomplete = () => {} }: { availableSeats: any[], oncomplete?: () => void } = $props();
 
     // State
     let showModal = $state(false);
@@ -289,7 +285,7 @@
 
             processedResults = data.results;
             step = 'results';
-            dispatch('complete');
+            oncomplete();
 
         } catch (e: any) {
             processError = e.message;

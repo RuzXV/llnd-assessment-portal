@@ -15,13 +15,16 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
       });
     }
 
-    // Now get the full attempt with tenant info
+    // Now get the full attempt with tenant info and product name
     const attempt = await env.DB.prepare(`
       SELECT
         a.attempt_id, a.student_name, a.student_id, a.status, a.version_id, a.draft_responses, a.expires_at,
-        t.name as rto_name, t.logo_url, t.brand_primary_color
+        t.name as rto_name, t.logo_url, t.brand_primary_color,
+        p.name as product_name
       FROM assessment_attempts a
       JOIN tenants t ON a.tenant_id = t.tenant_id
+      LEFT JOIN seats s ON a.seat_id = s.seat_id
+      LEFT JOIN assessment_products p ON s.product_id = p.product_id
       WHERE a.token_hash = ?
     `).bind(token).first();
 
@@ -81,6 +84,7 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
     }));
 
     return new Response(JSON.stringify({
+      product_name: attempt.product_name || null,
       student: { name: attempt.student_name, id: attempt.student_id },
       branding: {
         rto_name: attempt.rto_name,

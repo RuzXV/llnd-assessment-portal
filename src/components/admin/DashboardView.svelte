@@ -4,6 +4,7 @@
 
   let rawSeats = $state<any[]>([]);
   let assessments = $state<any[]>([]);
+  let allProducts = $state<any[]>([]);
   let loading = $state(true);
   let error = $state('');
 
@@ -14,6 +15,23 @@
   let successLink = $state('');
   let formError = $state('');
 
+  // Purchase seats state
+  let purchaseQty = $state(10);
+  let purchaseProduct = $state('');
+  let purchasing = $state(false);
+  let purchaseError = $state('');
+  let paymentSuccess = $state('');
+
+  // Purchase dropdown
+  let purchaseDropdownOpen = $state(false);
+  let purchaseDropdownRef = $state<HTMLDivElement | null>(null);
+
+  let purchaseProductName = $derived.by(() => {
+    const seat = allProducts.find(p => p.product_id === purchaseProduct);
+    if (seat) return seat.product_name || seat.product_id;
+    return 'Select assessment type...';
+  });
+
   // Search and expanded rows
   let searchQuery = $state('');
   let expandedRows = $state<Set<string>>(new Set());
@@ -23,7 +41,7 @@
   let dropdownRef = $state<HTMLDivElement | null>(null);
 
   // Get selected product display name
-  let selectedProductName = $derived(() => {
+  let selectedProductName = $derived.by(() => {
     const seat = availableSeats.find(s => s.product_id === selectedProduct);
     if (seat) return `${seat.product_name || seat.product_id} (${seat.count} left)`;
     return 'Select assessment type...';
@@ -50,12 +68,24 @@
   );
 
   onMount(async () => {
+      // Check URL params for payment callback
+      const urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.get('payment') === 'success') {
+          const seats = urlParams.get('seats') || '';
+          paymentSuccess = `Payment successful! ${seats} seat${seats === '1' ? '' : 's'} will be added shortly.`;
+          // Clean URL
+          window.history.replaceState({}, '', '/dashboard');
+      }
+
       await loadDashboardData();
 
-      // Close dropdown when clicking outside
+      // Close dropdowns when clicking outside
       const handleClickOutside = (e: MouseEvent) => {
           if (dropdownRef && !dropdownRef.contains(e.target as Node)) {
               dropdownOpen = false;
+          }
+          if (purchaseDropdownRef && !purchaseDropdownRef.contains(e.target as Node)) {
+              purchaseDropdownOpen = false;
           }
       };
       document.addEventListener('click', handleClickOutside);
@@ -73,9 +103,10 @@
           const token = localStorage.getItem('llnd_token');
           const headers = { 'Authorization': `Bearer ${token}` };
 
-          const [seatsRes, assessmentsRes] = await Promise.all([
+          const [seatsRes, assessmentsRes, productsRes] = await Promise.all([
               fetch('/api/seats', { headers }),
-              fetch('/api/assessments/list', { headers })
+              fetch('/api/assessments/list', { headers }),
+              fetch('/api/products', { headers })
           ]);
 
           if (!seatsRes.ok) throw new Error('Failed to load seats');
@@ -83,6 +114,12 @@
 
           rawSeats = await seatsRes.json();
           assessments = await assessmentsRes.json();
+          if (productsRes.ok) {
+              allProducts = await productsRes.json();
+              if (allProducts.length > 0 && !purchaseProduct) {
+                  purchaseProduct = allProducts[0].product_id;
+              }
+          }
 
           if(availableSeats.length > 0 && !selectedProduct) {
               selectedProduct = availableSeats[0].product_id;
@@ -123,6 +160,36 @@
       } finally {
           issuing = false;
       }
+  }
+
+  async function purchaseSeats(e: Event) {
+      e.preventDefault();
+      purchasing = true;
+      purchaseError = '';
+
+      try {
+          const token = localStorage.getItem('llnd_token');
+          const res = await fetch('/api/stripe/checkout', {
+              method: 'POST',
+              headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
+              body: JSON.stringify({ quantity: purchaseQty, product_id: purchaseProduct })
+          });
+
+          const data: any = await res.json();
+          if (!res.ok) throw new Error(data.error || 'Failed to create checkout session');
+
+          // Redirect to Stripe Checkout
+          window.location.href = data.checkout_url;
+      } catch (e: any) {
+          purchaseError = e.message;
+      } finally {
+          purchasing = false;
+      }
+  }
+
+  function selectPurchaseProduct(productId: string) {
+      purchaseProduct = productId;
+      purchaseDropdownOpen = false;
   }
 
   function toggleRow(attemptId: string) {
@@ -215,7 +282,114 @@
   </div>
 
   <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-      <div class="lg:col-span-1">
+      <div class="lg:col-span-1 space-y-6">
+          <!-- Purchase Seats -->
+          <div class="glass-panel rounded-xl p-6 relative z-10 overflow-visible">
+              <div class="flex items-center gap-3 mb-1">
+                  <div class="p-2 rounded-lg bg-emerald-500/10">
+                      <svg class="w-5 h-5 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 100 4 2 2 0 000-4z" />
+                      </svg>
+                  </div>
+                  <h3 class="text-lg leading-6 font-bold text-slate-900 dark:text-white">Purchase Seats</h3>
+              </div>
+              <p class="text-sm text-slate-500 dark:text-slate-400 mb-5">$9.95 AUD per assessment seat</p>
+
+              {#if paymentSuccess}
+                  <div class="rounded-lg bg-green-500/10 border border-green-500/20 p-4 mb-4">
+                      <p class="text-sm font-medium text-green-700 dark:text-green-400">{paymentSuccess}</p>
+                  </div>
+              {/if}
+
+              <form class="space-y-4" onsubmit={purchaseSeats}>
+                  <div>
+                      <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Assessment Type</label>
+                      <div class="relative" bind:this={purchaseDropdownRef}>
+                          <button
+                              type="button"
+                              onclick={() => purchaseDropdownOpen = !purchaseDropdownOpen}
+                              class="glass-input w-full pl-3 pr-10 py-2.5 text-left text-sm rounded-lg flex items-center justify-between cursor-pointer hover:bg-white/60 dark:hover:bg-slate-700/60 transition-colors"
+                          >
+                              <span class={allProducts.length === 0 ? 'text-slate-400' : 'text-slate-900 dark:text-white'}>
+                                  {#if loading}
+                                      Loading...
+                                  {:else if allProducts.length === 0}
+                                      No products available
+                                  {:else}
+                                      {purchaseProductName}
+                                  {/if}
+                              </span>
+                              <svg class={`w-5 h-5 text-slate-400 transition-transform ${purchaseDropdownOpen ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                              </svg>
+                          </button>
+
+                          {#if purchaseDropdownOpen && allProducts.length > 0}
+                              <div class="absolute z-50 mt-1 w-full rounded-lg bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 shadow-xl overflow-hidden">
+                                  <ul class="max-h-60 overflow-auto py-1">
+                                      {#each allProducts as product}
+                                          <li>
+                                              <button
+                                                  type="button"
+                                                  onclick={() => selectPurchaseProduct(product.product_id)}
+                                                  class={`w-full px-4 py-3 text-left text-sm transition-colors ${
+                                                      purchaseProduct === product.product_id
+                                                          ? 'bg-emerald-50 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300'
+                                                          : 'text-slate-700 dark:text-slate-200 hover:bg-gray-50 dark:hover:bg-slate-700/50'
+                                                  }`}
+                                              >
+                                                  <span class="font-medium">{product.product_name || product.name}</span>
+                                              </button>
+                                          </li>
+                                      {/each}
+                                  </ul>
+                              </div>
+                          {/if}
+                      </div>
+                  </div>
+
+                  <div>
+                      <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Quantity</label>
+                      <div class="flex items-center gap-3">
+                          <input
+                              type="number"
+                              bind:value={purchaseQty}
+                              min="1"
+                              max="500"
+                              class="glass-input w-24 text-center text-sm rounded-lg p-2.5 font-bold"
+                          />
+                          <div class="text-sm text-slate-500 dark:text-slate-400">
+                              = <span class="font-bold text-slate-900 dark:text-white">${(purchaseQty * 9.95).toFixed(2)}</span> AUD
+                          </div>
+                      </div>
+                  </div>
+
+                  {#if purchaseError}
+                      <p class="text-sm text-red-600 dark:text-red-400">{purchaseError}</p>
+                  {/if}
+
+                  <button
+                      type="submit"
+                      disabled={purchasing || allProducts.length === 0 || !purchaseProduct}
+                      class="w-full inline-flex justify-center items-center px-4 py-2.5 border border-transparent text-sm font-medium rounded-lg text-white bg-emerald-600 hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                  >
+                      {#if purchasing}
+                          <svg class="animate-spin -ml-1 mr-2 h-4 w-4 text-white" fill="none" viewBox="0 0 24 24">
+                              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                          </svg>
+                          Redirecting to checkout...
+                      {:else}
+                          <svg class="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                              <path stroke-linecap="round" stroke-linejoin="round" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" />
+                          </svg>
+                          Purchase {purchaseQty} Seat{purchaseQty !== 1 ? 's' : ''}
+                      {/if}
+                  </button>
+              </form>
+          </div>
+
+          <!-- Issue New Assessment -->
           <div class="glass-panel rounded-xl p-6">
               <h3 class="text-lg leading-6 font-bold text-slate-900 dark:text-white">Issue New Assessment</h3>
               <div class="mt-2 text-sm text-slate-500 dark:text-slate-400">
@@ -237,7 +411,7 @@
                                   {:else if availableSeats.length === 0}
                                       No seats available
                                   {:else}
-                                      {selectedProductName()}
+                                      {selectedProductName}
                                   {/if}
                               </span>
                               <svg class={`w-5 h-5 text-slate-400 transition-transform ${dropdownOpen ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
