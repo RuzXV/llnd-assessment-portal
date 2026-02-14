@@ -1,0 +1,73 @@
+---
+import PublicLayout from '../layouts/PublicLayout.astro';
+---
+
+<PublicLayout title="Student Data & QA - EduX">
+  <div class="relative overflow-hidden">
+    <div class="absolute top-0 left-0 w-[600px] h-[600px] glow-blob -translate-y-1/2 pointer-events-none" style="--blob-color:rgba(34,197,94,0.1)"></div>
+
+    <!-- Hero -->
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-12">
+      <div class="max-w-3xl">
+        <div class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-amber-600/10 text-amber-600 dark:text-amber-400 border border-amber-500/20 mb-6">
+          Coming Soon
+        </div>
+        <h1 class="text-4xl sm:text-5xl font-extrabold text-slate-900 dark:text-white tracking-tight">Student Data & QA Portal</h1>
+        <p class="mt-4 text-lg text-slate-600 dark:text-slate-300">
+          Comprehensive student data collection and quality assurance tools. Pre-enrolment reviews, learner surveys, satisfaction tracking — all designed to support OS25 compliance evidence.
+        </p>
+        <div class="mt-8 flex flex-col sm:flex-row gap-4">
+          <a href="/contact" class="px-8 py-3 rounded-xl text-base font-bold text-white bg-green-600 hover:bg-green-500 transition-all no-underline text-center">Register Interest</a>
+          <a href="/register" class="px-8 py-3 rounded-xl text-base font-bold border border-slate-300 dark:border-white/20 text-slate-700 dark:text-slate-200 hover:bg-black/5 dark:hover:bg-white/10 transition-all no-underline text-center">Register RTO</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Planned Products -->
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
+      <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-8">Planned Products</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="glass-panel rounded-xl p-6">
+          <div class="h-10 w-10 bg-green-600/10 rounded-lg flex items-center justify-center mb-4">
+            <svg class="h-5 w-5 text-green-600 dark:text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+          </div>
+          <h3 class="font-semibold text-slate-900 dark:text-white mb-2">Pre-Enrolment Review</h3>
+          <p class="text-sm text-slate-600 dark:text-slate-400">Collect student background data, study preferences, and support needs before enrolment to ensure appropriate course placement.</p>
+        </div>
+
+        <div class="glass-panel rounded-xl p-6">
+          <div class="h-10 w-10 bg-green-600/10 rounded-lg flex items-center justify-center mb-4">
+            <svg class="h-5 w-5 text-green-600 dark:text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+          </div>
+          <h3 class="font-semibold text-slate-900 dark:text-white mb-2">Unit Survey</h3>
+          <p class="text-sm text-slate-600 dark:text-slate-400">Gather student feedback at the unit level to improve training delivery and assessment quality. Track trends over time.</p>
+        </div>
+
+        <div class="glass-panel rounded-xl p-6">
+          <div class="h-10 w-10 bg-green-600/10 rounded-lg flex items-center justify-center mb-4">
+            <svg class="h-5 w-5 text-green-600 dark:text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          </div>
+          <h3 class="font-semibold text-slate-900 dark:text-white mb-2">Satisfaction Survey</h3>
+          <p class="text-sm text-slate-600 dark:text-slate-400">End-of-course satisfaction surveys aligned to quality indicator requirements. Automated reporting and trend analysis.</p>
+        </div>
+
+        <div class="glass-panel rounded-xl p-6">
+          <div class="h-10 w-10 bg-green-600/10 rounded-lg flex items-center justify-center mb-4">
+            <svg class="h-5 w-5 text-green-600 dark:text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+          </div>
+          <h3 class="font-semibold text-slate-900 dark:text-white mb-2">QA Dashboard</h3>
+          <p class="text-sm text-slate-600 dark:text-slate-400">Centralised dashboard bringing together all student data and survey results for quality assurance monitoring and continuous improvement.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
+      <div class="glass-panel rounded-2xl p-8 sm:p-12 text-center">
+        <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-4">Be the first to know</h2>
+        <p class="text-slate-600 dark:text-slate-400 max-w-lg mx-auto mb-8">The Student Data & QA Portal is currently in development. Register your interest and we'll notify you at launch.</p>
+        <a href="/contact" class="px-8 py-3 rounded-xl text-base font-bold text-white bg-green-600 hover:bg-green-500 transition-all no-underline">Register Interest</a>
+      </div>
+    </section>
+  </div>
+</PublicLayout>

@@ -1,0 +1,19 @@
+---
+import PortalLayout from '../../layouts/PortalLayout.astro';
+import DashboardView from '../../components/admin/DashboardView.svelte';
+
+const sidebarItems = [
+  { label: 'Dashboard', href: '/portal/llnd' },
+  { label: 'Assessment History', href: '/portal/llnd' },
+  { label: 'Settings', href: '/portal/llnd/settings' },
+];
+---
+
+<PortalLayout
+  title="Dashboard - LLND Portal"
+  portalName="LLND Portal"
+  portalColor="blue"
+  sidebarItems={sidebarItems}
+>
+  <DashboardView client:only="svelte" />
+</PortalLayout>

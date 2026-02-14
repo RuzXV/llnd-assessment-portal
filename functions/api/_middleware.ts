@@ -16,6 +16,7 @@ export const onRequest: PagesFunction<Env, any, Data> = async (context) => {
   // Note: /api/assessments/{token} routes are for students, /api/assessments/list is for admins
   const isPublicRoute =
     url.pathname.includes('/api/auth/login') ||
+    url.pathname.includes('/api/auth/register') ||
     url.pathname.includes('/api/stripe/webhook') ||
     (url.pathname.includes('/api/assessments/') && !url.pathname.includes('/api/assessments/list'));
 

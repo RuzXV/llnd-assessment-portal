@@ -14,12 +14,12 @@
       attemptId = urlParams.get('id');
 
       if (!attemptId) {
-        window.location.href = '/dashboard';
+        window.location.href = '/portal/llnd';
         return;
       }
 
       const token = localStorage.getItem('llnd_token');
-      if (!token) { window.location.href = '/'; return; }
+      if (!token) { window.location.href = '/login'; return; }
 
       try {
         const res = await fetch('/api/reports/generate', {

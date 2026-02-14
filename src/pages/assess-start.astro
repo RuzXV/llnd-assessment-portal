@@ -8,7 +8,7 @@ import AssessmentPlayer from '../components/student/AssessmentPlayer.svelte';
 
     <div class="absolute top-0 left-0 w-full h-1 bg-gray-200 dark:bg-gray-800 z-50"></div>
 
-    <div class="absolute top-0 right-0 w-96 h-96 bg-blue-500/5 rounded-full blur-3xl translate-x-1/2 -translate-y-1/2 pointer-events-none"></div>
+    <div class="absolute top-0 right-0 w-[600px] h-[600px] glow-blob translate-x-1/2 -translate-y-1/2 pointer-events-none" style="--blob-color:rgba(59,130,246,0.05)"></div>
 
     <div class="flex-1 max-w-3xl w-full mx-auto p-4 md:p-6 relative z-10 flex flex-col justify-center">
       <AssessmentPlayer client:only="svelte" />

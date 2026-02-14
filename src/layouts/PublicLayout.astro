@@ -1,0 +1,186 @@
+---
+import Layout from './Layout.astro';
+
+interface Props {
+  title: string;
+}
+
+const { title } = Astro.props;
+const currentPath = Astro.url.pathname;
+---
+
+<Layout title={title}>
+  <!-- Public Navigation -->
+  <nav class="sticky top-0 z-50 glass-nav">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between h-16 items-center">
+        <!-- Logo -->
+        <a href="/" class="flex items-center space-x-3 no-underline">
+          <div class="h-8 w-8 bg-blue-600/20 dark:bg-blue-400/20 border border-blue-500/30 rounded flex items-center justify-center">
+            <svg class="h-5 w-5 text-blue-600 dark:text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.384-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
+            </svg>
+          </div>
+          <span class="font-bold text-xl tracking-tight text-slate-800 dark:text-white">EduX</span>
+        </a>
+
+        <!-- Desktop Nav Links -->
+        <div class="hidden lg:flex items-center space-x-1">
+          <a href="/" class={`px-3 py-2 rounded-lg text-sm font-medium transition-colors no-underline ${currentPath === '/' ? 'bg-blue-600/10 text-blue-600 dark:text-blue-400' : 'text-slate-600 dark:text-slate-300 hover:bg-black/5 dark:hover:bg-white/10'}`}>Home</a>
+          <a href="/products" class={`px-3 py-2 rounded-lg text-sm font-medium transition-colors no-underline ${currentPath === '/products' ? 'bg-blue-600/10 text-blue-600 dark:text-blue-400' : 'text-slate-600 dark:text-slate-300 hover:bg-black/5 dark:hover:bg-white/10'}`}>Products</a>
+
+          <!-- Portals Dropdown -->
+          <div class="relative group">
+            <button class={`px-3 py-2 rounded-lg text-sm font-medium transition-colors flex items-center space-x-1 ${['/llnd-portal', '/student-data-qa', '/learning-induction', '/learning-pd'].includes(currentPath) ? 'bg-blue-600/10 text-blue-600 dark:text-blue-400' : 'text-slate-600 dark:text-slate-300 hover:bg-black/5 dark:hover:bg-white/10'}`}>
+              <span>Portals</span>
+              <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+            </button>
+            <div class="absolute top-full left-0 mt-1 w-64 glass-panel rounded-xl shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 py-2">
+              <a href="/llnd-portal" class="block px-4 py-2.5 text-sm text-slate-600 dark:text-slate-300 hover:bg-black/5 dark:hover:bg-white/10 no-underline">LLND Portal</a>
+              <a href="/student-data-qa" class="block px-4 py-2.5 text-sm text-slate-600 dark:text-slate-300 hover:bg-black/5 dark:hover:bg-white/10 no-underline">Student Data & QA</a>
+              <a href="/learning-induction" class="block px-4 py-2.5 text-sm text-slate-600 dark:text-slate-300 hover:bg-black/5 dark:hover:bg-white/10 no-underline">Learning - Induction</a>
+              <a href="/learning-pd" class="block px-4 py-2.5 text-sm text-slate-600 dark:text-slate-300 hover:bg-black/5 dark:hover:bg-white/10 no-underline">Learning - PD</a>
+            </div>
+          </div>
+
+          <a href="/pd-programs" class={`px-3 py-2 rounded-lg text-sm font-medium transition-colors no-underline ${currentPath === '/pd-programs' ? 'bg-blue-600/10 text-blue-600 dark:text-blue-400' : 'text-slate-600 dark:text-slate-300 hover:bg-black/5 dark:hover:bg-white/10'}`}>PD Programs</a>
+          <a href="/about" class={`px-3 py-2 rounded-lg text-sm font-medium transition-colors no-underline ${currentPath === '/about' ? 'bg-blue-600/10 text-blue-600 dark:text-blue-400' : 'text-slate-600 dark:text-slate-300 hover:bg-black/5 dark:hover:bg-white/10'}`}>About Us</a>
+          <a href="/contact" class={`px-3 py-2 rounded-lg text-sm font-medium transition-colors no-underline ${currentPath === '/contact' ? 'bg-blue-600/10 text-blue-600 dark:text-blue-400' : 'text-slate-600 dark:text-slate-300 hover:bg-black/5 dark:hover:bg-white/10'}`}>Contact Us</a>
+        </div>
+
+        <!-- Right side: CTA + Theme -->
+        <div class="flex items-center space-x-3">
+          <button id="pub-theme-toggle" class="p-2 rounded-full hover:bg-black/5 dark:hover:bg-white/10 transition-colors">
+            <svg id="pub-sun-icon" class="hidden w-5 h-5 text-yellow-500" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h1a1 1 0 100 2h-1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0V16a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 100 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
+            <svg id="pub-moon-icon" class="hidden w-5 h-5 text-blue-300" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+          </button>
+
+          <a href="/register" class="hidden sm:inline-flex px-4 py-2 rounded-lg text-sm font-semibold border border-blue-500/30 text-blue-600 dark:text-blue-400 hover:bg-blue-600/10 transition-colors no-underline">Register RTO</a>
+          <a href="/login" class="px-4 py-2 rounded-lg text-sm font-bold text-white bg-blue-600 hover:bg-blue-500 transition-colors no-underline">Login</a>
+
+          <!-- Mobile menu button -->
+          <button id="mobile-menu-btn" class="lg:hidden p-2 rounded-lg hover:bg-black/5 dark:hover:bg-white/10 transition-colors">
+            <svg class="w-6 h-6 text-slate-600 dark:text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path id="menu-open-icon" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+              <path id="menu-close-icon" class="hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="hidden lg:hidden border-t border-white/10">
+      <div class="px-4 py-3 space-y-1">
+        <a href="/" class="block px-3 py-2 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-300 hover:bg-black/5 dark:hover:bg-white/10 no-underline">Home</a>
+        <a href="/products" class="block px-3 py-2 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-300 hover:bg-black/5 dark:hover:bg-white/10 no-underline">Products</a>
+        <a href="/llnd-portal" class="block px-3 py-2 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-300 hover:bg-black/5 dark:hover:bg-white/10 no-underline">LLND Portal</a>
+        <a href="/student-data-qa" class="block px-3 py-2 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-300 hover:bg-black/5 dark:hover:bg-white/10 no-underline">Student Data & QA</a>
+        <a href="/learning-induction" class="block px-3 py-2 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-300 hover:bg-black/5 dark:hover:bg-white/10 no-underline">Learning - Induction</a>
+        <a href="/learning-pd" class="block px-3 py-2 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-300 hover:bg-black/5 dark:hover:bg-white/10 no-underline">Learning - PD</a>
+        <a href="/pd-programs" class="block px-3 py-2 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-300 hover:bg-black/5 dark:hover:bg-white/10 no-underline">PD Programs</a>
+        <a href="/about" class="block px-3 py-2 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-300 hover:bg-black/5 dark:hover:bg-white/10 no-underline">About Us</a>
+        <a href="/contact" class="block px-3 py-2 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-300 hover:bg-black/5 dark:hover:bg-white/10 no-underline">Contact Us</a>
+        <div class="pt-2 border-t border-white/10">
+          <a href="/register" class="block px-3 py-2 rounded-lg text-sm font-semibold text-blue-600 dark:text-blue-400 no-underline">Register RTO</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Page Content -->
+  <slot />
+
+  <!-- Footer -->
+  <footer class="border-t border-white/10 mt-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+        <!-- Brand -->
+        <div>
+          <div class="flex items-center space-x-2 mb-4">
+            <div class="h-8 w-8 bg-blue-600/20 dark:bg-blue-400/20 border border-blue-500/30 rounded flex items-center justify-center">
+              <svg class="h-5 w-5 text-blue-600 dark:text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.384-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
+              </svg>
+            </div>
+            <span class="font-bold text-lg text-slate-800 dark:text-white">EduX</span>
+          </div>
+          <p class="text-sm text-slate-500 dark:text-slate-400">A complete learner support, data & compliance platform for RTOs.</p>
+        </div>
+
+        <!-- Portals -->
+        <div>
+          <h4 class="font-semibold text-sm text-slate-800 dark:text-white mb-3">Portals</h4>
+          <ul class="space-y-2 text-sm">
+            <li><a href="/llnd-portal" class="text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 no-underline">LLND Portal</a></li>
+            <li><a href="/student-data-qa" class="text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 no-underline">Student Data & QA</a></li>
+            <li><a href="/learning-induction" class="text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 no-underline">Learning - Induction</a></li>
+            <li><a href="/learning-pd" class="text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 no-underline">Learning - PD</a></li>
+          </ul>
+        </div>
+
+        <!-- Company -->
+        <div>
+          <h4 class="font-semibold text-sm text-slate-800 dark:text-white mb-3">Company</h4>
+          <ul class="space-y-2 text-sm">
+            <li><a href="/about" class="text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 no-underline">About Us</a></li>
+            <li><a href="/contact" class="text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 no-underline">Contact Us</a></li>
+            <li><a href="/pd-programs" class="text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 no-underline">PD Programs</a></li>
+          </ul>
+        </div>
+
+        <!-- Get Started -->
+        <div>
+          <h4 class="font-semibold text-sm text-slate-800 dark:text-white mb-3">Get Started</h4>
+          <ul class="space-y-2 text-sm">
+            <li><a href="/register" class="text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 no-underline">Register RTO</a></li>
+            <li><a href="/login" class="text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 no-underline">Login</a></li>
+            <li><a href="/products" class="text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 no-underline">Products</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="mt-8 pt-8 border-t border-white/10 text-center text-sm text-slate-500 dark:text-slate-400">
+        &copy; {new Date().getFullYear()} EduX. All rights reserved.
+      </div>
+    </div>
+  </footer>
+</Layout>
+
+<script>
+  // Theme toggle
+  const toggleBtn = document.getElementById('pub-theme-toggle');
+  const sunIcon = document.getElementById('pub-sun-icon');
+  const moonIcon = document.getElementById('pub-moon-icon');
+
+  function updateIcons() {
+    const isDark = document.documentElement.classList.contains('dark');
+    if (isDark) {
+      sunIcon?.classList.remove('hidden');
+      moonIcon?.classList.add('hidden');
+    } else {
+      sunIcon?.classList.add('hidden');
+      moonIcon?.classList.remove('hidden');
+    }
+  }
+  updateIcons();
+
+  toggleBtn?.addEventListener('click', () => {
+    const html = document.documentElement;
+    html.classList.toggle('dark');
+    localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    updateIcons();
+  });
+
+  // Mobile menu toggle
+  const mobileBtn = document.getElementById('mobile-menu-btn');
+  const mobileMenu = document.getElementById('mobile-menu');
+  const menuOpenIcon = document.getElementById('menu-open-icon');
+  const menuCloseIcon = document.getElementById('menu-close-icon');
+
+  mobileBtn?.addEventListener('click', () => {
+    mobileMenu?.classList.toggle('hidden');
+    menuOpenIcon?.classList.toggle('hidden');
+    menuCloseIcon?.classList.toggle('hidden');
+  });
+</script>

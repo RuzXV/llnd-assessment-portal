@@ -1,58 +1,176 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import LoginForm from '../components/LoginForm.svelte';
+import PublicLayout from '../layouts/PublicLayout.astro';
 ---
 
-<Layout title="Login - LLND Assessment Portal">
-    <main class="relative flex items-center justify-center min-h-screen p-4 overflow-hidden">
-        
-        <div class="absolute top-0 left-1/4 w-96 h-96 bg-blue-500/20 rounded-full blur-3xl -translate-y-1/2 pointer-events-none"></div>
-        <div class="absolute bottom-0 right-1/4 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl translate-y-1/2 pointer-events-none"></div>
+<PublicLayout title="EduX - Complete RTO Platform">
+  <div class="relative overflow-hidden">
+    <!-- Background decorations -->
+    <div class="absolute top-0 left-1/4 w-[600px] h-[600px] glow-blob -translate-y-1/2 pointer-events-none" style="--blob-color:rgba(59,130,246,0.15)"></div>
+    <div class="absolute top-1/2 right-0 w-[600px] h-[600px] glow-blob pointer-events-none" style="--blob-color:rgba(168,85,247,0.08)"></div>
 
-        <div class="absolute top-6 right-6 z-20">
-             <button id="login-theme-toggle" class="p-3 rounded-full glass-panel hover:bg-white/10 transition-colors text-slate-600 dark:text-slate-300">
-                <svg id="login-sun-icon" class="hidden w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
-                </svg>
-                <svg id="login-moon-icon" class="hidden w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
-                </svg>
-             </button>
+    <!-- Hero Section -->
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-16 relative z-10">
+      <div class="text-center max-w-4xl mx-auto">
+        <div class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-blue-600/10 text-blue-600 dark:text-blue-400 border border-blue-500/20 mb-6">
+          Built by RTOs, for RTOs
+        </div>
+        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-slate-900 dark:text-white tracking-tight leading-tight">
+          A complete learner support, data & compliance platform
+          <span class="text-blue-600 dark:text-blue-400"> for RTOs</span>
+        </h1>
+        <p class="mt-6 text-lg sm:text-xl text-slate-600 dark:text-slate-300 max-w-2xl mx-auto">
+          ACSF-aligned assessments, student surveys, induction learning, and professional development — all in one platform. No contracts. Pay as you go.
+        </p>
+        <div class="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
+          <a href="/register" class="w-full sm:w-auto px-8 py-3.5 rounded-xl text-base font-bold text-white bg-blue-600 hover:bg-blue-500 transition-all shadow-lg shadow-blue-600/20 no-underline text-center">
+            Register Your RTO
+          </a>
+          <a href="/contact" class="w-full sm:w-auto px-8 py-3.5 rounded-xl text-base font-bold border border-slate-300 dark:border-white/20 text-slate-700 dark:text-slate-200 hover:bg-black/5 dark:hover:bg-white/10 transition-all no-underline text-center">
+            Request a Demo
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Portal Tiles Section -->
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 relative z-10">
+      <div class="text-center mb-12">
+        <h2 class="text-3xl font-bold text-slate-900 dark:text-white">Four Portals, One Platform</h2>
+        <p class="mt-3 text-slate-600 dark:text-slate-400 max-w-xl mx-auto">Everything your RTO needs to support, assess, and develop learners — modular and flexible.</p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <!-- LLND Portal -->
+        <a href="/llnd-portal" class="group glass-panel rounded-2xl p-6 hover:border-blue-500/30 transition-all no-underline">
+          <div class="h-12 w-12 bg-blue-600/20 dark:bg-blue-400/20 border border-blue-500/30 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+            <svg class="h-6 w-6 text-blue-600 dark:text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.384-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
+            </svg>
+          </div>
+          <h3 class="font-bold text-lg text-slate-900 dark:text-white mb-2">LLND Portal</h3>
+          <p class="text-sm text-slate-600 dark:text-slate-400">ACSF-aligned Language, Literacy, Numeracy & Digital assessments with automated reporting.</p>
+          <span class="inline-flex items-center text-xs font-semibold text-blue-600 dark:text-blue-400 mt-3">
+            Available Now
+            <svg class="w-3 h-3 ml-1 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+          </span>
+        </a>
+
+        <!-- Student Data & QA -->
+        <a href="/student-data-qa" class="group glass-panel rounded-2xl p-6 hover:border-green-500/30 transition-all no-underline">
+          <div class="h-12 w-12 bg-green-600/20 dark:bg-green-400/20 border border-green-500/30 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+            <svg class="h-6 w-6 text-green-600 dark:text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
+            </svg>
+          </div>
+          <h3 class="font-bold text-lg text-slate-900 dark:text-white mb-2">Student Data & QA</h3>
+          <p class="text-sm text-slate-600 dark:text-slate-400">Pre-enrolment reviews, student surveys, and satisfaction tracking for quality assurance.</p>
+          <span class="inline-flex items-center text-xs font-semibold text-amber-600 dark:text-amber-400 mt-3">
+            Coming Soon
+          </span>
+        </a>
+
+        <!-- Learning - Induction -->
+        <a href="/learning-induction" class="group glass-panel rounded-2xl p-6 hover:border-purple-500/30 transition-all no-underline">
+          <div class="h-12 w-12 bg-purple-600/20 dark:bg-purple-400/20 border border-purple-500/30 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+            <svg class="h-6 w-6 text-purple-600 dark:text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+            </svg>
+          </div>
+          <h3 class="font-bold text-lg text-slate-900 dark:text-white mb-2">Learning — Induction</h3>
+          <p class="text-sm text-slate-600 dark:text-slate-400">Student induction modules covering rights, responsibilities, and study skills.</p>
+          <span class="inline-flex items-center text-xs font-semibold text-amber-600 dark:text-amber-400 mt-3">
+            Coming Soon
+          </span>
+        </a>
+
+        <!-- Learning - PD -->
+        <a href="/learning-pd" class="group glass-panel rounded-2xl p-6 hover:border-amber-500/30 transition-all no-underline">
+          <div class="h-12 w-12 bg-amber-600/20 dark:bg-amber-400/20 border border-amber-500/30 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+            <svg class="h-6 w-6 text-amber-600 dark:text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.384-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
+            </svg>
+          </div>
+          <h3 class="font-bold text-lg text-slate-900 dark:text-white mb-2">Learning — PD</h3>
+          <p class="text-sm text-slate-600 dark:text-slate-400">Professional development content for trainers and assessors. Track and manage PD hours.</p>
+          <span class="inline-flex items-center text-xs font-semibold text-amber-600 dark:text-amber-400 mt-3">
+            Coming Soon
+          </span>
+        </a>
+      </div>
+    </section>
+
+    <!-- Why RTOs Section -->
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 relative z-10">
+      <div class="text-center mb-12">
+        <h2 class="text-3xl font-bold text-slate-900 dark:text-white">Why RTOs Choose EduX</h2>
+        <p class="mt-3 text-slate-600 dark:text-slate-400 max-w-xl mx-auto">Purpose-built for the Australian VET sector by people who understand compliance and learner support.</p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div class="glass-panel rounded-xl p-6">
+          <div class="h-10 w-10 bg-blue-600/10 rounded-lg flex items-center justify-center mb-4">
+            <svg class="h-5 w-5 text-blue-600 dark:text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          </div>
+          <h3 class="font-semibold text-slate-900 dark:text-white mb-2">ACSF-Aligned</h3>
+          <p class="text-sm text-slate-600 dark:text-slate-400">Assessments mapped to the Australian Core Skills Framework with domain-level reporting across Reading, Writing, Numeracy, Oral, and Digital.</p>
         </div>
 
-		<div class="relative z-10 w-full max-w-md">
-			<LoginForm client:load />
-		</div>
-	</main>
-</Layout>
+        <div class="glass-panel rounded-xl p-6">
+          <div class="h-10 w-10 bg-green-600/10 rounded-lg flex items-center justify-center mb-4">
+            <svg class="h-5 w-5 text-green-600 dark:text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+          </div>
+          <h3 class="font-semibold text-slate-900 dark:text-white mb-2">OS25-Ready</h3>
+          <p class="text-sm text-slate-600 dark:text-slate-400">Designed with the Outcomes Standards 2025 in mind. Evidence-based reporting that supports compliance and audit readiness.</p>
+        </div>
 
-<script>
-    const toggleBtn = document.getElementById('login-theme-toggle');
-    const sunIcon = document.getElementById('login-sun-icon');
-    const moonIcon = document.getElementById('login-moon-icon');
+        <div class="glass-panel rounded-xl p-6">
+          <div class="h-10 w-10 bg-purple-600/10 rounded-lg flex items-center justify-center mb-4">
+            <svg class="h-5 w-5 text-purple-600 dark:text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          </div>
+          <h3 class="font-semibold text-slate-900 dark:text-white mb-2">No Contracts</h3>
+          <p class="text-sm text-slate-600 dark:text-slate-400">Pay as you go. Purchase assessment seats when you need them. No lock-ins, no subscriptions, no hidden fees.</p>
+        </div>
 
-    function updateIcons() {
-        const isDark = document.documentElement.classList.contains('dark');
-        if (isDark) {
-            sunIcon?.classList.remove('hidden');
-            moonIcon?.classList.add('hidden');
-        } else {
-            sunIcon?.classList.add('hidden');
-            moonIcon?.classList.remove('hidden');
-        }
-    }
+        <div class="glass-panel rounded-xl p-6">
+          <div class="h-10 w-10 bg-amber-600/10 rounded-lg flex items-center justify-center mb-4">
+            <svg class="h-5 w-5 text-amber-600 dark:text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+          </div>
+          <h3 class="font-semibold text-slate-900 dark:text-white mb-2">RTO-Built</h3>
+          <p class="text-sm text-slate-600 dark:text-slate-400">Built by RTO practitioners who understand the daily realities of compliance, student support, and audit preparation.</p>
+        </div>
 
-    updateIcons();
+        <div class="glass-panel rounded-xl p-6">
+          <div class="h-10 w-10 bg-red-600/10 rounded-lg flex items-center justify-center mb-4">
+            <svg class="h-5 w-5 text-red-600 dark:text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+          </div>
+          <h3 class="font-semibold text-slate-900 dark:text-white mb-2">Automated Reports</h3>
+          <p class="text-sm text-slate-600 dark:text-slate-400">PDF reports generated instantly after assessment completion. Domain breakdowns, ACSF band indicators, and support strategies included.</p>
+        </div>
 
-    toggleBtn?.addEventListener('click', () => {
-        const html = document.documentElement;
-        if (html.classList.contains('dark')) {
-            html.classList.remove('dark');
-            localStorage.setItem('theme', 'light');
-        } else {
-            html.classList.add('dark');
-            localStorage.setItem('theme', 'dark');
-        }
-        updateIcons();
-    });
-</script>
+        <div class="glass-panel rounded-xl p-6">
+          <div class="h-10 w-10 bg-cyan-600/10 rounded-lg flex items-center justify-center mb-4">
+            <svg class="h-5 w-5 text-cyan-600 dark:text-cyan-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+          </div>
+          <h3 class="font-semibold text-slate-900 dark:text-white mb-2">Multi-Tenant</h3>
+          <p class="text-sm text-slate-600 dark:text-slate-400">Each RTO gets their own secure, isolated environment with custom branding and independent data management.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Bottom CTA -->
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 relative z-10">
+      <div class="glass-panel rounded-2xl p-8 sm:p-12 text-center">
+        <h2 class="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white mb-4">Ready to get started?</h2>
+        <p class="text-slate-600 dark:text-slate-400 max-w-lg mx-auto mb-8">Register your RTO in minutes. No credit card required. Start with the LLND Portal and add more as you grow.</p>
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+          <a href="/register" class="w-full sm:w-auto px-8 py-3.5 rounded-xl text-base font-bold text-white bg-blue-600 hover:bg-blue-500 transition-all shadow-lg shadow-blue-600/20 no-underline text-center">
+            Register Your RTO
+          </a>
+          <a href="/contact" class="w-full sm:w-auto px-8 py-3.5 rounded-xl text-base font-bold border border-slate-300 dark:border-white/20 text-slate-700 dark:text-slate-200 hover:bg-black/5 dark:hover:bg-white/10 transition-all no-underline text-center">
+            Contact Us
+          </a>
+        </div>
+      </div>
+    </section>
+  </div>
+</PublicLayout>

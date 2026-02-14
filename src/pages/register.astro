@@ -1,0 +1,68 @@
+---
+import Layout from '../layouts/Layout.astro';
+import RegisterForm from '../components/RegisterForm.svelte';
+---
+
+<Layout title="Register - EduX Platform">
+    <main class="relative flex items-center justify-center min-h-screen p-4 overflow-hidden">
+
+        <div class="absolute top-0 left-1/4 w-[600px] h-[600px] glow-blob -translate-y-1/2 pointer-events-none" style="--blob-color:rgba(59,130,246,0.2)"></div>
+        <div class="absolute bottom-0 right-1/4 w-[600px] h-[600px] glow-blob translate-y-1/2 pointer-events-none" style="--blob-color:rgba(168,85,247,0.1)"></div>
+
+        <div class="absolute top-6 left-6 z-20">
+            <a href="/" class="flex items-center space-x-2 no-underline text-slate-400 hover:text-slate-200 transition-colors">
+                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
+                <span class="text-sm font-medium">Back to Home</span>
+            </a>
+        </div>
+
+        <div class="absolute top-6 right-6 z-20">
+             <button id="reg-theme-toggle" class="p-3 rounded-full glass-panel hover:bg-white/10 transition-colors text-slate-600 dark:text-slate-300">
+                <svg id="reg-sun-icon" class="hidden w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                </svg>
+                <svg id="reg-moon-icon" class="hidden w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                </svg>
+             </button>
+        </div>
+
+		<div class="relative z-10 w-full max-w-md my-12">
+			<RegisterForm client:load />
+            <p class="text-center text-sm text-slate-500 dark:text-slate-400 mt-6">
+                Already have an account? <a href="/login" class="text-blue-600 dark:text-blue-400 hover:underline font-medium">Sign in</a>
+            </p>
+		</div>
+	</main>
+</Layout>
+
+<script>
+    const toggleBtn = document.getElementById('reg-theme-toggle');
+    const sunIcon = document.getElementById('reg-sun-icon');
+    const moonIcon = document.getElementById('reg-moon-icon');
+
+    function updateIcons() {
+        const isDark = document.documentElement.classList.contains('dark');
+        if (isDark) {
+            sunIcon?.classList.remove('hidden');
+            moonIcon?.classList.add('hidden');
+        } else {
+            sunIcon?.classList.add('hidden');
+            moonIcon?.classList.remove('hidden');
+        }
+    }
+
+    updateIcons();
+
+    toggleBtn?.addEventListener('click', () => {
+        const html = document.documentElement;
+        if (html.classList.contains('dark')) {
+            html.classList.remove('dark');
+            localStorage.setItem('theme', 'light');
+        } else {
+            html.classList.add('dark');
+            localStorage.setItem('theme', 'dark');
+        }
+        updateIcons();
+    });
+</script>

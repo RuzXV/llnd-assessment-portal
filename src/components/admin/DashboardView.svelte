@@ -74,7 +74,7 @@
           const seats = urlParams.get('seats') || '';
           paymentSuccess = `Payment successful! ${seats} seat${seats === '1' ? '' : 's'} will be added shortly.`;
           // Clean URL
-          window.history.replaceState({}, '', '/dashboard');
+          window.history.replaceState({}, '', '/portal/llnd');
       }
 
       await loadDashboardData();

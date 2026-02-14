@@ -21,7 +21,7 @@
 
       localStorage.setItem('llnd_token', data.token);
       localStorage.setItem('llnd_user', JSON.stringify(data.user));
-      window.location.href = '/dashboard';
+      window.location.href = '/portal/llnd';
 
     } catch (err: any) {
       error = err.message;
