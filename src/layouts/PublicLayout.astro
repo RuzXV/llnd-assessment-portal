@@ -31,12 +31,13 @@ const currentPath = Astro.url.pathname;
 
           <!-- Portals Dropdown -->
           <div class="relative group">
-            <button class={`px-3 py-2 rounded-lg text-sm font-medium transition-colors flex items-center space-x-1 ${['/llnd-portal', '/student-data-qa', '/learning-induction', '/learning-pd'].includes(currentPath) ? 'bg-blue-600/10 text-blue-600 dark:text-blue-400' : 'text-slate-600 dark:text-slate-300 hover:bg-black/5 dark:hover:bg-white/10'}`}>
+            <button class={`px-3 py-2 rounded-lg text-sm font-medium transition-colors flex items-center space-x-1 ${['/llnd-portal', '/per-portal', '/student-data-qa', '/learning-induction', '/learning-pd'].includes(currentPath) ? 'bg-blue-600/10 text-blue-600 dark:text-blue-400' : 'text-slate-600 dark:text-slate-300 hover:bg-black/5 dark:hover:bg-white/10'}`}>
               <span>Portals</span>
               <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
             </button>
             <div class="absolute top-full left-0 mt-1 w-64 glass-panel rounded-xl shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 py-2">
               <a href="/llnd-portal" class="block px-4 py-2.5 text-sm text-slate-600 dark:text-slate-300 hover:bg-black/5 dark:hover:bg-white/10 no-underline">LLND Portal</a>
+              <a href="/per-portal" class="block px-4 py-2.5 text-sm text-slate-600 dark:text-slate-300 hover:bg-black/5 dark:hover:bg-white/10 no-underline">PER Portal</a>
               <a href="/student-data-qa" class="block px-4 py-2.5 text-sm text-slate-600 dark:text-slate-300 hover:bg-black/5 dark:hover:bg-white/10 no-underline">Student Data & QA</a>
               <a href="/learning-induction" class="block px-4 py-2.5 text-sm text-slate-600 dark:text-slate-300 hover:bg-black/5 dark:hover:bg-white/10 no-underline">Learning - Induction</a>
               <a href="/learning-pd" class="block px-4 py-2.5 text-sm text-slate-600 dark:text-slate-300 hover:bg-black/5 dark:hover:bg-white/10 no-underline">Learning - PD</a>
@@ -75,6 +76,7 @@ const currentPath = Astro.url.pathname;
         <a href="/" class="block px-3 py-2 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-300 hover:bg-black/5 dark:hover:bg-white/10 no-underline">Home</a>
         <a href="/products" class="block px-3 py-2 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-300 hover:bg-black/5 dark:hover:bg-white/10 no-underline">Products</a>
         <a href="/llnd-portal" class="block px-3 py-2 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-300 hover:bg-black/5 dark:hover:bg-white/10 no-underline">LLND Portal</a>
+        <a href="/per-portal" class="block px-3 py-2 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-300 hover:bg-black/5 dark:hover:bg-white/10 no-underline">PER Portal</a>
         <a href="/student-data-qa" class="block px-3 py-2 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-300 hover:bg-black/5 dark:hover:bg-white/10 no-underline">Student Data & QA</a>
         <a href="/learning-induction" class="block px-3 py-2 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-300 hover:bg-black/5 dark:hover:bg-white/10 no-underline">Learning - Induction</a>
         <a href="/learning-pd" class="block px-3 py-2 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-300 hover:bg-black/5 dark:hover:bg-white/10 no-underline">Learning - PD</a>
@@ -113,6 +115,7 @@ const currentPath = Astro.url.pathname;
           <h4 class="font-semibold text-sm text-slate-800 dark:text-white mb-3">Portals</h4>
           <ul class="space-y-2 text-sm">
             <li><a href="/llnd-portal" class="text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 no-underline">LLND Portal</a></li>
+            <li><a href="/per-portal" class="text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 no-underline">PER Portal</a></li>
             <li><a href="/student-data-qa" class="text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 no-underline">Student Data & QA</a></li>
             <li><a href="/learning-induction" class="text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 no-underline">Learning - Induction</a></li>
             <li><a href="/learning-pd" class="text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 no-underline">Learning - PD</a></li>

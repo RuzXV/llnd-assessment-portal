@@ -1,0 +1,15 @@
+---
+import Layout from '../layouts/Layout.astro';
+import PerQuestionnaire from '../components/per/PerQuestionnaire.svelte';
+---
+
+<Layout title="Pre-Enrolment Review">
+  <main class="min-h-screen relative overflow-hidden">
+    <div class="absolute inset-0 bg-gray-50 dark:bg-slate-900 -z-10"></div>
+    <div class="absolute top-0 right-0 w-[600px] h-[600px] glow-blob translate-x-1/2 -translate-y-1/2 pointer-events-none" style="--blob-color:rgba(20,184,166,0.1)"></div>
+
+    <div class="max-w-4xl mx-auto py-12 px-4 relative z-10">
+      <PerQuestionnaire client:only="svelte" />
+    </div>
+  </main>
+</Layout>

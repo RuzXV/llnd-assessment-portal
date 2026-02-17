@@ -18,7 +18,8 @@ export const onRequest: PagesFunction<Env, any, Data> = async (context) => {
     url.pathname.includes('/api/auth/login') ||
     url.pathname.includes('/api/auth/register') ||
     url.pathname.includes('/api/stripe/webhook') ||
-    (url.pathname.includes('/api/assessments/') && !url.pathname.includes('/api/assessments/list'));
+    (url.pathname.includes('/api/assessments/') && !url.pathname.includes('/api/assessments/list')) ||
+    url.pathname.includes('/api/per/submit');
 
   if (isPublicRoute) {
     return next();

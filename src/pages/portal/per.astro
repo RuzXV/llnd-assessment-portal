@@ -1,0 +1,19 @@
+---
+import PortalLayout from '../../layouts/PortalLayout.astro';
+import PerDashboard from '../../components/per/PerDashboard.svelte';
+
+const sidebarItems = [
+  { label: 'Dashboard', href: '/portal/per' },
+  { label: 'LLND Portal', href: '/portal/llnd' },
+  { label: 'Settings', href: '/portal/llnd/settings' },
+];
+---
+
+<PortalLayout
+  title="Pre-Enrolment Review - PER Portal"
+  portalName="PER Portal"
+  portalColor="green"
+  sidebarItems={sidebarItems}
+>
+  <PerDashboard client:only="svelte" />
+</PortalLayout>
