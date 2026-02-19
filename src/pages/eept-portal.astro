@@ -1,0 +1,165 @@
+---
+import PublicLayout from '../layouts/PublicLayout.astro';
+---
+
+<PublicLayout title="English Placement Test (EEPT) - EduX">
+  <div class="relative overflow-hidden">
+    <div class="absolute top-0 left-0 w-[600px] h-[600px] glow-blob -translate-y-1/2 pointer-events-none" style="--blob-color:rgba(168,85,247,0.15)"></div>
+
+    <!-- Hero -->
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-12">
+      <div class="max-w-3xl">
+        <div class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-purple-600/10 text-purple-600 dark:text-purple-400 border border-purple-500/20 mb-6">
+          New Module
+        </div>
+        <h1 class="text-4xl sm:text-5xl font-extrabold text-slate-900 dark:text-white tracking-tight">English Placement Test</h1>
+        <p class="mt-4 text-xl font-medium text-slate-700 dark:text-slate-200">
+          Evidence-Based English Proficiency Assessment for RTOs
+        </p>
+        <p class="mt-4 text-lg text-slate-600 dark:text-slate-300">
+          The EEPT is a CEFR-aligned, ACSF-referenced English placement assessment designed specifically for Australian RTOs enrolling international students. Receive CEFR levels (A2-C1), indicative IELTS bands, and course-specific admission benchmarks.
+        </p>
+        <div class="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div class="flex items-start gap-2 text-sm text-slate-600 dark:text-slate-400">
+            <svg class="w-5 h-5 text-purple-500 mt-0.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
+            CEFR-aligned results (A2 through C1)
+          </div>
+          <div class="flex items-start gap-2 text-sm text-slate-600 dark:text-slate-400">
+            <svg class="w-5 h-5 text-purple-500 mt-0.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
+            Indicative IELTS band mapping
+          </div>
+          <div class="flex items-start gap-2 text-sm text-slate-600 dark:text-slate-400">
+            <svg class="w-5 h-5 text-purple-500 mt-0.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
+            Hybrid writing scoring with AI + human review
+          </div>
+          <div class="flex items-start gap-2 text-sm text-slate-600 dark:text-slate-400">
+            <svg class="w-5 h-5 text-purple-500 mt-0.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
+            Traffic-light course admission benchmarks
+          </div>
+        </div>
+        <p class="mt-4 text-sm font-semibold text-purple-600 dark:text-purple-400">Built for CRICOS providers and RTOs. Not a generic English test, but a placement tool aligned to Australian qualification requirements.</p>
+        <div class="mt-8 flex flex-col sm:flex-row gap-4">
+          <a href="/register" class="px-8 py-3 rounded-xl text-base font-bold text-white bg-purple-600 hover:bg-purple-500 transition-all shadow-lg shadow-purple-600/20 no-underline text-center">Register Your RTO</a>
+          <a href="/login" class="px-8 py-3 rounded-xl text-base font-bold border border-slate-300 dark:border-white/20 text-slate-700 dark:text-slate-200 hover:bg-black/5 dark:hover:bg-white/10 transition-all no-underline text-center">Login</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Test Structure -->
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
+      <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-4">Four-Section Assessment</h2>
+      <p class="text-slate-600 dark:text-slate-400 mb-6 max-w-2xl">Each section targets specific English language skills, calibrated across CEFR levels from A2 to C1.</p>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="glass-panel rounded-xl p-6">
+          <div class="w-10 h-10 rounded-lg bg-purple-500/10 flex items-center justify-center mb-3">
+            <span class="text-purple-500 font-bold text-lg">A</span>
+          </div>
+          <h3 class="font-bold text-slate-900 dark:text-white text-sm">Grammar & Vocabulary</h3>
+          <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">20 multiple-choice questions across CEFR levels. Tests sentence structure, verb forms, prepositions, and word choice.</p>
+          <div class="mt-3 text-xs font-bold text-purple-600 dark:text-purple-400">20 points</div>
+        </div>
+        <div class="glass-panel rounded-xl p-6">
+          <div class="w-10 h-10 rounded-lg bg-blue-500/10 flex items-center justify-center mb-3">
+            <span class="text-blue-500 font-bold text-lg">B</span>
+          </div>
+          <h3 class="font-bold text-slate-900 dark:text-white text-sm">Reading Comprehension</h3>
+          <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">4 passages at progressive difficulty levels. Assesses inference, detail extraction, and text analysis.</p>
+          <div class="mt-3 text-xs font-bold text-blue-600 dark:text-blue-400">30 points</div>
+        </div>
+        <div class="glass-panel rounded-xl p-6">
+          <div class="w-10 h-10 rounded-lg bg-emerald-500/10 flex items-center justify-center mb-3">
+            <span class="text-emerald-500 font-bold text-lg">C</span>
+          </div>
+          <h3 class="font-bold text-slate-900 dark:text-white text-sm">Writing Task 1</h3>
+          <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Functional writing task (120-150 words). Scored across task achievement, coherence, vocabulary, and grammar.</p>
+          <div class="mt-3 text-xs font-bold text-emerald-600 dark:text-emerald-400">20 points</div>
+        </div>
+        <div class="glass-panel rounded-xl p-6">
+          <div class="w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center mb-3">
+            <span class="text-amber-500 font-bold text-lg">D</span>
+          </div>
+          <h3 class="font-bold text-slate-900 dark:text-white text-sm">Writing Task 2</h3>
+          <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Extended opinion/discussion essay (~250 words). Higher weighting reflects importance of extended writing skills.</p>
+          <div class="mt-3 text-xs font-bold text-amber-600 dark:text-amber-400">30 points</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CEFR Bands -->
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
+      <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-4">CEFR-Aligned Scoring</h2>
+      <p class="text-slate-600 dark:text-slate-400 mb-6 max-w-2xl">Results are mapped to the Common European Framework of Reference with indicative IELTS equivalents.</p>
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="glass-panel rounded-xl p-5 text-center border-l-4 border-red-400">
+          <div class="text-2xl font-bold text-red-400">A2</div>
+          <div class="text-xs text-slate-400 mt-1">0-34 points</div>
+          <div class="text-xs text-slate-500 mt-1">IELTS ~3.5-4.0</div>
+        </div>
+        <div class="glass-panel rounded-xl p-5 text-center border-l-4 border-amber-400">
+          <div class="text-2xl font-bold text-amber-400">B1</div>
+          <div class="text-xs text-slate-400 mt-1">35-49 points</div>
+          <div class="text-xs text-slate-500 mt-1">IELTS ~4.5-5.0</div>
+        </div>
+        <div class="glass-panel rounded-xl p-5 text-center border-l-4 border-blue-400">
+          <div class="text-2xl font-bold text-blue-400">B2</div>
+          <div class="text-xs text-slate-400 mt-1">50-64 points</div>
+          <div class="text-xs text-slate-500 mt-1">IELTS ~5.5-6.0</div>
+        </div>
+        <div class="glass-panel rounded-xl p-5 text-center border-l-4 border-green-400">
+          <div class="text-2xl font-bold text-green-400">C1</div>
+          <div class="text-xs text-slate-400 mt-1">65-100 points</div>
+          <div class="text-xs text-slate-500 mt-1">IELTS ~6.5-7.5+</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Features -->
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
+      <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6">Built for Compliance & Confidence</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div class="glass-panel rounded-xl p-6">
+          <div class="w-10 h-10 rounded-lg bg-purple-500/10 flex items-center justify-center mb-3">
+            <svg class="w-5 h-5 text-purple-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" /></svg>
+          </div>
+          <h3 class="font-bold text-slate-900 dark:text-white">Integrity Monitoring</h3>
+          <p class="text-sm text-slate-500 dark:text-slate-400 mt-2">Tab-switch detection, timing analysis, similarity checks, and AI-generated content screening.</p>
+        </div>
+        <div class="glass-panel rounded-xl p-6">
+          <div class="w-10 h-10 rounded-lg bg-blue-500/10 flex items-center justify-center mb-3">
+            <svg class="w-5 h-5 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" /></svg>
+          </div>
+          <h3 class="font-bold text-slate-900 dark:text-white">Course Benchmarking</h3>
+          <p class="text-sm text-slate-500 dark:text-slate-400 mt-2">Configure per-course CEFR thresholds. Instant GREEN/AMBER/RED admission indicators for every candidate.</p>
+        </div>
+        <div class="glass-panel rounded-xl p-6">
+          <div class="w-10 h-10 rounded-lg bg-emerald-500/10 flex items-center justify-center mb-3">
+            <svg class="w-5 h-5 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
+          </div>
+          <h3 class="font-bold text-slate-900 dark:text-white">PDF Reports</h3>
+          <p class="text-sm text-slate-500 dark:text-slate-400 mt-2">Professional candidate and manager reports with score breakdowns, CEFR mapping, and verifiable QR codes.</p>
+        </div>
+        <div class="glass-panel rounded-xl p-6">
+          <div class="w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center mb-3">
+            <svg class="w-5 h-5 text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>
+          </div>
+          <h3 class="font-bold text-slate-900 dark:text-white">Human Review Queue</h3>
+          <p class="text-sm text-slate-500 dark:text-slate-400 mt-2">Flagged writing submissions are routed for human moderation. QA sampling ensures scoring accuracy over time.</p>
+        </div>
+        <div class="glass-panel rounded-xl p-6">
+          <div class="w-10 h-10 rounded-lg bg-red-500/10 flex items-center justify-center mb-3">
+            <svg class="w-5 h-5 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" /></svg>
+          </div>
+          <h3 class="font-bold text-slate-900 dark:text-white">Bulk Issuance</h3>
+          <p class="text-sm text-slate-500 dark:text-slate-400 mt-2">Upload CSV files to issue assessments to entire cohorts at once. Track status from issued through to finalised.</p>
+        </div>
+        <div class="glass-panel rounded-xl p-6">
+          <div class="w-10 h-10 rounded-lg bg-indigo-500/10 flex items-center justify-center mb-3">
+            <svg class="w-5 h-5 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4" /></svg>
+          </div>
+          <h3 class="font-bold text-slate-900 dark:text-white">Multi-Tenant & Auditable</h3>
+          <p class="text-sm text-slate-500 dark:text-slate-400 mt-2">Full data isolation per RTO. Immutable audit trail for every action. Export-ready data for compliance reporting.</p>
+        </div>
+      </div>
+    </section>
+  </div>
+</PublicLayout>

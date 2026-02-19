@@ -1,0 +1,21 @@
+---
+import PortalLayout from '../../layouts/PortalLayout.astro';
+import EeptDashboard from '../../components/eept/EeptDashboard.svelte';
+
+const sidebarItems = [
+  { label: 'Dashboard', href: '/portal/eept' },
+  { label: 'Issue Assessments', href: '/portal/eept' },
+  { label: 'Review Queue', href: '/portal/eept' },
+  { label: 'LLND Portal', href: '/portal/llnd' },
+  { label: 'Settings', href: '/portal/llnd/settings' },
+];
+---
+
+<PortalLayout
+  title="English Placement (EEPT)"
+  portalName="EEPT Portal"
+  portalColor="purple"
+  sidebarItems={sidebarItems}
+>
+  <EeptDashboard client:only="svelte" />
+</PortalLayout>

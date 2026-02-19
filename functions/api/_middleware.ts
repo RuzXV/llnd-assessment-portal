@@ -19,7 +19,12 @@ export const onRequest: PagesFunction<Env, any, Data> = async (context) => {
     url.pathname.includes('/api/auth/register') ||
     url.pathname.includes('/api/stripe/webhook') ||
     (url.pathname.includes('/api/assessments/') && !url.pathname.includes('/api/assessments/list')) ||
-    url.pathname.includes('/api/per/submit');
+    url.pathname.includes('/api/per/submit') ||
+    // EEPT public routes: candidate start, submit, autosave, verification
+    url.pathname.includes('/api/ebpa/start') ||
+    url.pathname.includes('/api/ebpa/submit-') ||
+    url.pathname.includes('/api/ebpa/save-progress') ||
+    url.pathname.includes('/api/ebpa/verify/');
 
   if (isPublicRoute) {
     return next();
